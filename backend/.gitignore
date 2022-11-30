@@ -112,4 +112,6 @@ lib/
 data/
 
 # files
-config/
+config/default.json
+config/production.json
+config/test.json
