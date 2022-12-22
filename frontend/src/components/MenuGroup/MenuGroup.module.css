@@ -1,0 +1,67 @@
+.menuHeader {
+  display: flex;
+  align-items: center;
+}
+
+.addButton {
+  position: absolute;
+  right: 1rem;
+  color: var(--main-item-color);
+}
+
+.addButton:hover {
+  cursor: pointer;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.5rem;
+  background-color: var(--main-bg-color);
+}
+
+.inputField {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+}
+
+.inputField:focus{
+    outline-color: var(--main-item-color)
+}
+
+.activeItem {
+  background-color: var(--main-bg-color);
+}
+
+.icon {
+  margin-right: 1rem;
+  color: var(--main-item-color);
+  font-size: 1rem;
+}
+
+.doneButton {
+  position: absolute;
+  right: 2.5rem;
+  color: var(--main-item-color);
+}
+
+.closeButton {
+  position: absolute;
+  right: 1rem;
+  color: var(--main-item-color);
+}
+
+.doneButton:hover {
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  cursor: pointer;
+}
+
+.menuHeader p {
+  color: var(--passive-color);
+}
+
