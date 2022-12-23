@@ -7366,6 +7366,11 @@ randombytes@^2.1.0:
   dependencies:
     safe-buffer "^5.1.0"
 
+randomquote-api@^3.5.6:
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/randomquote-api/-/randomquote-api-3.5.6.tgz#7ebd8b163752f60a9eba35257203772778de8b8e"
+  integrity sha512-dbEX93OAbis/V5k0bYfXFHPTpCKGFfbG7AdFQwuOSLNNtmR8obJDvKEn50G1hxyF3GDRbWOAj8kzPEfDJFrQcA==
+
 range-parser@^1.2.1, range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.1.tgz#3cf37023d199e1c24d1a55b84800c2f3e6468031"
