@@ -8,21 +8,25 @@ const Quotes = require('randomquote-api');
 function App() {
   const [activeMenuItem, setActiveMenuItem] = useState(String || null);
   const [quote, setQuote] = useState(String);
-
-  let randomQuoteObject= Quotes.randomQuote();
-
-  const getObject = () => {
-    randomQuoteObject = Quotes.randomQuote();
-    setQuote(randomQuoteObject.quote + ' - ' + randomQuoteObject.author)
-  }
-
+  
+  
+  
   useEffect(() => {
-    getObject()
-  }, [])
+    let randomQuoteObject;
 
-  setTimeout(() => {
+    const getObject = () => {
+      randomQuoteObject = Quotes.randomQuote();
+      setQuote(randomQuoteObject.quote + ' - ' + randomQuoteObject.author)
+    }
+
     getObject();
-  }, (86400*1000))
+
+    const interval = setInterval(() => {
+      getObject();
+    }, 86400*1000);
+    return () => clearInterval(interval);
+
+  }, [])
 
   return (
     <div>
