@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import MenuGroup from './components/MenuGroup/MenuGroup';
-import { v4 as uuidv4 } from 'uuid';
 import QuoteOfTheDay from './components/QuoteOfTheDay/QuoteOfTheDay';
+import Tally from './components/Tally/Tally';
+import { v4 as uuidv4 } from 'uuid';
+import AddPerson from './components/AddPerson/AddPerson';
 
 const Quotes = require('randomquote-api');
 
@@ -43,7 +45,12 @@ function App() {
           },
         ]}
       />
+      <br />
       <QuoteOfTheDay>{quote}</QuoteOfTheDay>
+      <br />
+      <Tally tally={{person: 'Abdi', tally: 10}} />
+      <br />
+      <AddPerson tally={[]}/>
     </div>
   );
 }

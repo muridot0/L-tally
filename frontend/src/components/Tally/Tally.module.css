@@ -1,0 +1,43 @@
+.tallyCard {
+  text-align: center;
+  padding: 0.5rem 0rem;
+  border-radius: 0.5rem;
+  background-color: var(--main-bg-color);
+}
+
+.tallyHeader {
+  display: block;
+  font-size: 2.5rem;
+}
+
+.tallyContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0rem;
+}
+
+.subtractButton {
+  margin: 0rem 1rem;
+  font-size: 3.5rem;
+  color: var(--subtract-button-color);
+}
+
+.subtractButton:hover {
+  cursor: pointer;
+}
+
+.addButton {
+  margin: 0rem 1rem;
+  font-size: 3.5rem;
+  color: var(--main-item-color);
+}
+
+.addButton:hover {
+  cursor: pointer;
+}
+
+.tally {
+  margin: 0rem 1rem;
+  font-size: 3.5rem;
+}
