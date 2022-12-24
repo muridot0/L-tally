@@ -11,14 +11,21 @@ export interface Props {
   onDelete: VoidFunction;
 }
 
-function Menu({ item, onClick, isActive, onChange, onDelete}: Props) {
+function Menu({ item, onClick, isActive, onChange, onDelete }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
   const [cancelSpaceName, setCancelSpaceName] = useState(item.spaceName);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setIsEditing(false);
+      setShowIcons(false);
+    }
+  };
+
   const handleCancel = () => {
     item.spaceName = cancelSpaceName;
-  }
+  };
 
   let menuContent;
   if (isEditing) {
@@ -32,17 +39,21 @@ function Menu({ item, onClick, isActive, onChange, onDelete}: Props) {
           className={styles.inputField}
           type='text'
           onChange={(e) => onChange(e)}
+          onKeyDown={handleKeyDown}
         />
-        <span className={clsx('material-symbols-rounded', styles.doneButton)} onClick={() => {
-          setIsEditing(false);
-          setShowIcons(false);
-        }}>
+        <span
+          className={clsx('material-symbols-rounded', styles.doneButton)}
+          onClick={() => {
+            setIsEditing(false);
+            setShowIcons(false);
+          }}
+        >
           done
         </span>
         <span
           className={clsx('material-symbols-rounded', styles.closeButton)}
           onClick={() => {
-            handleCancel()
+            handleCancel();
             setIsEditing(false);
             setShowIcons(false);
           }}
@@ -61,10 +72,10 @@ function Menu({ item, onClick, isActive, onChange, onDelete}: Props) {
         <span
           className={clsx('material-symbols-rounded', styles.editIcon)}
           onClick={() => {
-            setIsEditing(true)
-            setCancelSpaceName(item.spaceName)
+            setIsEditing(true);
+            setCancelSpaceName(item.spaceName);
           }}
-          >
+        >
           edit
         </span>
         {}
@@ -75,7 +86,7 @@ function Menu({ item, onClick, isActive, onChange, onDelete}: Props) {
             setIsEditing(false);
             setShowIcons(false);
           }}
-          >
+        >
           delete_forever
         </span>
       </div>
@@ -107,9 +118,8 @@ function Menu({ item, onClick, isActive, onChange, onDelete}: Props) {
         </div>
       </>
     );
-    
   }
-  
+
   return <>{menuContent}</>;
 }
 

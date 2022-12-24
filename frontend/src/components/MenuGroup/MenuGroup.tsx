@@ -4,7 +4,7 @@ import Menu from '../Menu/Menu';
 import { item } from '../Menu/types/items';
 import clsx from 'clsx';
 import styles from './MenuGroup.module.css';
-import { v4 as uuidv4 } from 'uuid'; 
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Props {
   items: item[];
@@ -12,19 +12,24 @@ export interface Props {
   onClick: (id: string) => void;
 }
 
-function MenuGroup({ items, selectedItemId, onClick}: Props) {
+function MenuGroup({ items, selectedItemId, onClick }: Props) {
   const [menuItems, setMenuItems] = useState(items);
   const [spaceName, setSpaceName] = useState(String);
   const [activeInput, setActiveInput] = useState(false);
 
-  function addMenuItems() {
+  function addMenuItems(name: string) {
+    const exists = menuItems.find((item) => item.spaceName === name);
+    if (exists) {
+      alert('Can not create space name with a name that already exists');
+      return;
+    }
     setActiveInput(true);
     let newArr = [
       ...menuItems,
       {
         meta: '',
         spaceName: spaceName,
-        id: uuidv4()
+        id: uuidv4(),
       },
     ];
     setMenuItems(newArr.filter((arr) => arr.spaceName.trim() !== ''));
@@ -36,7 +41,7 @@ function MenuGroup({ items, selectedItemId, onClick}: Props) {
   };
 
   const confirmAdd = () => {
-    addMenuItems();
+    addMenuItems(spaceName);
     setActiveInput(false);
     setSpaceName('');
   };
@@ -48,7 +53,7 @@ function MenuGroup({ items, selectedItemId, onClick}: Props) {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      addMenuItems();
+      addMenuItems(spaceName);
       setActiveInput(false);
       setSpaceName('');
     }
@@ -60,16 +65,18 @@ function MenuGroup({ items, selectedItemId, onClick}: Props) {
   };
 
   const handleChangeItem = (e: any, item: item) => {
-    setMenuItems(menuItems.map(menuItem => {
-      if(menuItem.spaceName !== item.spaceName){
-        return menuItem;
-      } else {
-        return {
-          ...menuItem,
-          spaceName: e.target.value
+    setMenuItems(
+      menuItems.map((menuItem) => {
+        if (menuItem.spaceName !== item.spaceName) {
+          return menuItem;
+        } else {
+          return {
+            ...menuItem,
+            spaceName: e.target.value,
+          };
         }
-      }
-    }))
+      })
+    );
   };
 
   const handleDeleteItem = (id: string) => {
@@ -96,7 +103,7 @@ function MenuGroup({ items, selectedItemId, onClick}: Props) {
                 isActive={menuItem.id === selectedItemId}
                 onClick={() => onClick(menuItem.id)}
                 onChange={(e: any) => {
-                  handleChangeItem(e, menuItem)
+                  handleChangeItem(e, menuItem);
                 }}
                 onDelete={() => {
                   handleDeleteItem(menuItem.spaceName);
