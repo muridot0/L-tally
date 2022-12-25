@@ -1,4 +1,79 @@
-.addPerson{
+.addPerson {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 4.5rem;
-  color: var(--main-item-color)
+  color: var(--main-item-color);
+}
+
+.addPerson:hover {
+  cursor: pointer;
+}
+
+.tallyGroup {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+}
+
+.tallyCard {
+  text-align: center;
+  padding: 0.5rem 0rem;
+  border-radius: 0.5rem;
+  background-color: var(--main-bg-color);
+}
+
+.tallyHeader {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 2rem;
+  width: 10rem
+}
+
+.tallyHeader:focus {
+  outline-color: var(--main-item-color);
+}
+
+.tallyContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0rem;
+}
+
+.subtractButton {
+  margin: 0rem 1rem;
+  font-size: 3.5rem;
+  color: var(--passive-color);
+}
+
+.subtractButton:hover {
+  cursor: default;
+}
+
+.addButton {
+  margin: 0rem 1rem;
+  font-size: 3.5rem;
+  color: var(--passive-color);
+}
+
+
+.addButton:hover {
+  cursor: default;
+}
+
+.cancel {
+  font-size: 3.5rem;
+  color: var(--close-button-color);
+}
+
+.cancel:hover {
+  cursor: pointer;
+}
+
+.tally {
+  margin: 0rem 1rem;
+  font-size: 3.5rem;
 }

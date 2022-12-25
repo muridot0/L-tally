@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import MenuGroup from './components/MenuGroup/MenuGroup';
 import QuoteOfTheDay from './components/QuoteOfTheDay/QuoteOfTheDay';
 import Tally from './components/Tally/Tally';
@@ -11,21 +11,22 @@ function App() {
   const [activeMenuItem, setActiveMenuItem] = useState(String || null);
   const [quote, setQuote] = useState(String);
 
-  useEffect(() => {
+  
+  
+  const getObject = useCallback(() => {
     let randomQuoteObject;
+    randomQuoteObject = Quotes.randomQuote();
+    setQuote(randomQuoteObject.quote + ' - ' + randomQuoteObject.author);
+  }, []);
 
-    const getObject = () => {
-      randomQuoteObject = Quotes.randomQuote();
-      setQuote(randomQuoteObject.quote + ' - ' + randomQuoteObject.author);
-    };
-
+  
+  useEffect(() => {
     getObject();
 
-    const interval = setInterval(() => {
+    setInterval(() => {
       getObject();
     }, 86400 * 1000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [getObject]);
 
   return (
     <div>
@@ -47,8 +48,6 @@ function App() {
       />
       <br />
       <QuoteOfTheDay>{quote}</QuoteOfTheDay>
-      <br />
-      <Tally tally={{person: 'Abdi', tally: 10}} />
       <br />
       <AddPerson tally={[]}/>
     </div>

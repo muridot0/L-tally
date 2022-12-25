@@ -8,25 +8,21 @@ interface Props {
 }
 
 function Tally({ tally }: Props) {
-  const [count, setCount] = useState(tally.tally);
+  const [count, setCount] = useState(tally.tallyNumber);
 
   const increaseTally = () => {
-    let counter = count;
-    counter++;
-    setCount(counter);
+    setCount(count => count + 1);
   };
 
   const decreaseTally = () => {
-    let counter = count;
-    if (counter > 0) {
-      counter--;
+    if (count > 0) {
+      setCount(count => count - 1);
     }
-    setCount(counter);
   };
 
   return (
     <div className={clsx(styles.tallyCard)}>
-      <span className={clsx(styles.tallyHeader)}>{tally.person}</span>
+      <span className={clsx(styles.tallyHeader)}>{tally.tallyName}</span>
       <div className={clsx(styles.tallyContent)}>
         <span
           className={clsx('material-symbols-rounded', styles.subtractButton)}

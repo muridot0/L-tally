@@ -42,7 +42,7 @@
   font-size: 1rem;
   position: absolute;
   right: 1rem;
-  color: var(--main-item-color);
+  color: var(--close-button-color);
 }
 
 .editIcon {
@@ -61,7 +61,7 @@
 .closeButton {
   position: absolute;
   right: 1rem;
-  color: var(--main-item-color);
+  color: var(--close-button-color);
 }
 
 .doneButton:hover {

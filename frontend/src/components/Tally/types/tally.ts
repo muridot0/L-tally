@@ -1,4 +1,5 @@
 export type tally = {
-  person: string;
-  tally: number;
+  tallyName: string;
+  tallyNumber: number;
+  id: string;
 }

@@ -138,6 +138,7 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
           </span>
         </div>
       ) : null}
+      <hr className={styles.divider} />
     </div>
   );
 }
