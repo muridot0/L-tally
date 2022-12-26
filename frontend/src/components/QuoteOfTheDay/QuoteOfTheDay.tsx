@@ -1,7 +1,7 @@
 import styles from './QuoteOfTheDay.module.css';
 
 interface Props {
-  children?: string;
+  children?: JSX.Element | string;
 }
 
 function QuoteOfTheDay({ children }: Props) {
