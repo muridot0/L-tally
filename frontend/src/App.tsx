@@ -37,9 +37,7 @@ function App() {
 
   return (
     <div>
-      <div>
-        <TallyHeader menuDrawerOpened={open} onClick={openCloseMenu} />
-      </div>
+      <TallyHeader menuDrawerOpened={open} onClick={openCloseMenu} />
       <div
         className={clsx(
           { [styles.menuGroup]: !open },
