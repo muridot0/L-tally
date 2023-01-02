@@ -64,7 +64,7 @@ function App() {
           onClick={(id) => setActiveMenuItem(id)}
         />
         <QuoteOfTheDay className={styles.quote}>{quote}</QuoteOfTheDay>
-        <TallyFooter userName='Muri' userIcon='person' />
+        <TallyFooter userName='Muri' userIcon='person' onClick={() => {}} />
       </div>
       <div className={clsx({ [styles.openDrawer]: !open })}>
         <AddPerson tally={[]} />
