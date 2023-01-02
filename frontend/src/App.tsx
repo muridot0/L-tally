@@ -1,24 +1,32 @@
+import clsx from 'clsx';
 import { useState, useEffect, useCallback } from 'react';
+import AddPerson from './components/AddPerson/AddPerson';
 import MenuGroup from './components/MenuGroup/MenuGroup';
 import QuoteOfTheDay from './components/QuoteOfTheDay/QuoteOfTheDay';
+import styles from './App.module.css';
 import { v4 as uuidv4 } from 'uuid';
-import AddPerson from './components/AddPerson/AddPerson';
-
+import TallyHeader from './components/TallyHeader/TallyHeader';
 const Quotes = require('randomquote-api');
 
 function App() {
-  const [activeMenuItem, setActiveMenuItem] = useState(String || null);
   const [quote, setQuote] = useState(String);
+  const [activeMenuItem, setActiveMenuItem] = useState(String || null);
+  const [open, setOpen] = useState(true);
 
-  
-  
+  const openCloseMenu = () => {
+    if (open === false) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  };
+
   const getObject = useCallback(() => {
     let randomQuoteObject;
     randomQuoteObject = Quotes.randomQuote();
     setQuote(randomQuoteObject.quote + ' - ' + randomQuoteObject.author);
   }, []);
 
-  
   useEffect(() => {
     getObject();
 
@@ -29,26 +37,38 @@ function App() {
 
   return (
     <div>
-      <MenuGroup
-        selectedItemId={activeMenuItem}
-        onClick={(id) => setActiveMenuItem(id)}
-        items={[
-          {
-            meta: '',
-            spaceName: 'L-Kings',
-            id: uuidv4(),
-          },
-          {
-            meta: '',
-            spaceName: 'Participants',
-            id: uuidv4(),
-          },
-        ]}
-      />
-      <br />
-      <QuoteOfTheDay>{quote}</QuoteOfTheDay>
-      <br />
-      <AddPerson tally={[]}/>
+      <div>
+        <TallyHeader menuDrawerOpened={open} onClick={openCloseMenu} />
+      </div>
+      <div
+        className={clsx(
+          { [styles.menuGroup]: !open },
+          { [styles.closeWidth]: open }
+        )}
+      >
+        <MenuGroup
+          items={[
+            {
+              meta: '',
+              spaceName: 'L-Kings',
+              id: uuidv4(),
+              route: '/L-Kings',
+            },
+            {
+              meta: '',
+              spaceName: 'Participants',
+              id: uuidv4(),
+              route: '/Participants',
+            },
+          ]}
+          selectedItemId={activeMenuItem}
+          onClick={(id) => setActiveMenuItem(id)}
+        />
+        <QuoteOfTheDay className={styles.quote}>{quote}</QuoteOfTheDay>
+      </div>
+      <div className={clsx({ [styles.openDrawer]: !open })}>
+        <AddPerson tally={[]} />
+      </div>
     </div>
   );
 }

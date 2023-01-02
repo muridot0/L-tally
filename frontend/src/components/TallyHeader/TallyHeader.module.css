@@ -1,0 +1,33 @@
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5.25rem;
+}
+
+.icon {
+  color: var(--main-item-color);
+  font-size: 3rem;
+}
+
+.headerTop {
+  font-weight: bold;
+  margin: 0;
+}
+
+.headerBottom {
+  color: var(--passive-color);
+  margin: 0;
+}
+
+.menu {
+  color: var(--main-item-color);
+}
+
+.close {
+  color: var(--close-button-color);
+}
+
+.burger {
+  position: absolute;
+  right: 1rem;
+}

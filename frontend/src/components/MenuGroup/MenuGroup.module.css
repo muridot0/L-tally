@@ -9,8 +9,7 @@
 }
 
 .addButton {
-  position: absolute;
-  right: 1rem;
+  margin-left: auto;
   color: var(--main-item-color);
 }
 
@@ -47,14 +46,12 @@
 }
 
 .doneButton {
-  position: absolute;
-  right: 2.5rem;
+  margin: 0 0 0 auto;
   color: var(--main-item-color);
 }
 
 .closeButton {
-  position: absolute;
-  right: 1rem;
+  margin-left: 0 0 0 auto;
   color: var(--close-button-color);
 }
 

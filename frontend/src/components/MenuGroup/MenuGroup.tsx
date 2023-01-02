@@ -30,6 +30,7 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
         meta: '',
         spaceName: spaceName,
         id: uuidv4(),
+        route: `/${spaceName}`
       },
     ];
     setMenuItems(newArr.filter((arr) => arr.spaceName.trim() !== ''));
@@ -123,6 +124,7 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
             type='text'
             onChange={handleChange}
             onKeyDown={handleKeyDown}
+            autoFocus
           />
           <span
             className={clsx('material-symbols-rounded', styles.doneButton)}

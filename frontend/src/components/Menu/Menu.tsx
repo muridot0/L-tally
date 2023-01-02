@@ -40,6 +40,7 @@ function Menu({ item, onClick, isActive, onChange, onDelete }: Props) {
           type='text'
           onChange={(e) => onChange(e)}
           onKeyDown={handleKeyDown}
+          autoFocus
         />
         <span
           className={clsx('material-symbols-rounded', styles.doneButton)}

@@ -69,6 +69,7 @@ function AddPerson({ tally }: Props) {
           className={clsx(styles.tallyHeader)}
           onChange={handleChange}
           onKeyDown={confirmAdd}
+          autoFocus
         />
         <div className={clsx(styles.tallyContent)}>
           <span
