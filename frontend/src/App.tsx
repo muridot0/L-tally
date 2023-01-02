@@ -6,6 +6,7 @@ import QuoteOfTheDay from './components/QuoteOfTheDay/QuoteOfTheDay';
 import styles from './App.module.css';
 import { v4 as uuidv4 } from 'uuid';
 import TallyHeader from './components/TallyHeader/TallyHeader';
+import TallyFooter from './components/TallyFooter/TallyFooter';
 const Quotes = require('randomquote-api');
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
           onClick={(id) => setActiveMenuItem(id)}
         />
         <QuoteOfTheDay className={styles.quote}>{quote}</QuoteOfTheDay>
+        <TallyFooter userName='Muri' userIcon='person' />
       </div>
       <div className={clsx({ [styles.openDrawer]: !open })}>
         <AddPerson tally={[]} />
