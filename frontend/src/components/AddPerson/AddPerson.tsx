@@ -7,9 +7,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface Props {
   tally: tally[];
+  openNav: boolean;
 }
 
-function AddPerson({ tally }: Props) {
+function AddPerson({ tally, openNav }: Props) {
   const [tallyArr, setTallyArr] = useState(tally);
   const [person, setPerson] = useState(String);
   const [showInputTally, setShowInputTally] = useState(false);
@@ -60,7 +61,7 @@ function AddPerson({ tally }: Props) {
   const cancelAdd = () => {
     setShowInputTally(false);
     setPerson('');
-  }
+  };
 
   function dummyTally() {
     return (
@@ -82,23 +83,32 @@ function AddPerson({ tally }: Props) {
             add_circle
           </span>
         </div>
-        <span className={clsx('material-symbols-rounded',styles.cancel)} onClick={cancelAdd}>close</span>
+        <span
+          className={clsx('material-symbols-rounded', styles.cancel)}
+          onClick={cancelAdd}
+        >
+          close
+        </span>
       </div>
     );
   }
 
   return (
-    <div className={styles.tallyGroup}>
-      {tallyArr.map((tallyItems, index) => {
-        return <Tally tally={tallyItems} key={index} />;
-      })}
-      {showInputTally ? dummyTally() : null}
-      <span
-        className={clsx('material-symbols-rounded', styles.addPerson)}
-        onClick={showInput}
+    <div className={clsx({ [styles.openDrawer]: openNav })}>
+      <div
+        className={clsx(styles.tallyGroup)}
       >
-        person_add
-      </span>
+        {tallyArr.map((tallyItems, index) => {
+          return <Tally tally={tallyItems} key={index} />;
+        })}
+        {showInputTally ? dummyTally() : null}
+        <span
+          className={clsx('material-symbols-rounded', styles.addPerson)}
+          onClick={showInput}
+        >
+          person_add
+        </span>
+      </div>
     </div>
   );
 }

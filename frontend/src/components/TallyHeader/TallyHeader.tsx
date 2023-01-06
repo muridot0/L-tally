@@ -3,10 +3,12 @@ import styles from './TallyHeader.module.css'
 
 interface Props {
   menuDrawerOpened: boolean;
-  onClick: VoidFunction;
+  onClick?: VoidFunction;
+  onNavOpen: () => void;
+  onNavClose: () => void;
 }
 
-function TallyHeader({ menuDrawerOpened, onClick }: Props) {
+function TallyHeader({ menuDrawerOpened, onClick, onNavOpen, onNavClose }: Props) {
   return (
     <div className={styles.logo}>
       <span className={clsx('material-symbols-rounded', styles.icon)}>
@@ -19,17 +21,17 @@ function TallyHeader({ menuDrawerOpened, onClick }: Props) {
       <div className={styles.burger}>
         {!menuDrawerOpened ? (
           <span
-            className={clsx('material-symbols-rounded', styles.close)}
-            onClick={onClick}
+            className={clsx('material-symbols-rounded', styles.menu)}
+            onClick={onNavOpen}
           >
-            close
+            menu
           </span>
         ) : (
           <span
-            className={clsx('material-symbols-rounded', styles.menu)}
-            onClick={onClick}
+            className={clsx('material-symbols-rounded', styles.close)}
+            onClick={onNavClose}
           >
-            menu
+            close
           </span>
         )}
       </div>

@@ -1,0 +1,27 @@
+.openedDrawer {
+  width: 20rem;
+  transition: all 0.2s ease;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  overflow-x: hidden;
+  z-index: 1;
+}
+
+@media (max-width: 30rem) {
+  .openedDrawer {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    left: 0;
+    overflow-x: hidden;
+    position: fixed;
+  }
+}
+
+.closedDrawer {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  opacity: 0;
+}
