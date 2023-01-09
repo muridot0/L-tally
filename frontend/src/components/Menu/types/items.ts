@@ -3,5 +3,5 @@ export type item = {
     meta?: any,
     spaceName: string,
     id: string,
-    route: string
+    route: string,
 }

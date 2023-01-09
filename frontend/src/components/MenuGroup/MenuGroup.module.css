@@ -4,6 +4,10 @@
   align-items: center;
 }
 
+.navStyle {
+  text-decoration: none;
+}
+
 .divider{
   margin-top: 1rem;
   border-top: 1px solid var(--main-bg-color)

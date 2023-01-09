@@ -22,7 +22,8 @@ const defaultMenu = [
 
 
 function MenuDrawer({ openDrawer, quoteSupplier }: Props) {
-  const [activeMenuItem, setActiveMenuItem] = useState(String || null);
+  const [activeMenuItem, setActiveMenuItem] = useState(defaultMenu[0].id || null);
+
 
 
   return (

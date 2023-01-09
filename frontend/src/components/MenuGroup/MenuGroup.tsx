@@ -5,6 +5,7 @@ import { item } from '../Menu/types/items';
 import clsx from 'clsx';
 import styles from './MenuGroup.module.css';
 import { v4 as uuidv4 } from 'uuid';
+import { NavLink, Outlet } from 'react-router-dom';
 
 export interface Props {
   items: item[];
@@ -30,7 +31,7 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
         meta: '',
         spaceName: spaceName,
         id: uuidv4(),
-        route: `/${spaceName}`
+        route: `/${spaceName}`,
       },
     ];
     setMenuItems(newArr.filter((arr) => arr.spaceName.trim() !== ''));
@@ -98,19 +99,26 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
       <div className={styles.menuItemGroup}>
         {menuItems.map((menuItem, index) => {
           return (
-            <div key={index}>
-              <Menu
-                item={menuItem}
-                isActive={menuItem.id === selectedItemId}
-                onClick={() => onClick(menuItem.id)}
-                onChange={(e: any) => {
-                  handleChangeItem(e, menuItem);
-                }}
-                onDelete={() => {
-                  handleDeleteItem(menuItem.spaceName);
-                }}
-              />
-            </div>
+            <>
+              <NavLink
+                key={index}
+                to={menuItem.route}
+                className={styles.navStyle}
+              >
+                <Menu
+                  item={menuItem}
+                  isActive={menuItem.id === selectedItemId}
+                  onClick={() => onClick(menuItem.id)}
+                  onChange={(e: any) => {
+                    handleChangeItem(e, menuItem);
+                  }}
+                  onDelete={() => {
+                    handleDeleteItem(menuItem.spaceName);
+                  }}
+                />
+              </NavLink>
+              <Outlet />
+            </>
           );
         })}
       </div>
