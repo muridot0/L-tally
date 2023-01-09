@@ -4,6 +4,7 @@
   align-items: center;
   font-size: 4.5rem;
   color: var(--main-item-color);
+
 }
 
 .addPerson:hover {
@@ -15,13 +16,18 @@
   padding: 1rem;
 }
 
-@media (max-width: 30rem) {
+@media (max-width: 660px) {
   .openDrawer {
     display: none;
   }
 }
 
 .tallyGroup {
+  z-index: 1;
+  position: relative;
+  overflow-y: auto;
+  margin: 1rem 0;
+  max-height: 35rem;
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));

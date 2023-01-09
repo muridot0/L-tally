@@ -7,7 +7,6 @@ const Quotes = require('randomquote-api');
 function App() {
   const [quote, setQuote] = useState(String);
   const [open, setOpen] = useState(false);
-  
 
   const getObject = useCallback(() => {
     let randomQuoteObject;
@@ -24,11 +23,14 @@ function App() {
   }, [getObject]);
 
   return (
-    <>
-      <TallyHeader menuDrawerOpened={open} onNavOpen={() => setOpen(true)} onNavClose={() => setOpen(false)} />
+    <TallyHeader
+      menuDrawerOpened={open}
+      onNavOpen={() => setOpen(true)}
+      onNavClose={() => setOpen(false)}
+    >
       <MenuDrawer openDrawer={open} quoteSupplier={quote} />
-      <AddPerson tally={[]} openNav={open}/>
-    </>
+      <AddPerson tally={[]} openNav={open} />
+    </TallyHeader>
   );
 }
 

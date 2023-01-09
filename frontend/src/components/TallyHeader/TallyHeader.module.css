@@ -1,7 +1,15 @@
 .logo {
   display: flex;
   align-items: center;
-  margin-bottom: 5.25rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+  padding-bottom: 5rem;
+}
+
+.children {
+  margin-top: 5rem;
 }
 
 .icon {

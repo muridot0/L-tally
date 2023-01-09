@@ -11,6 +11,16 @@ body {
   font-family: Inter, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 0.2rem;
+  height: 0.2rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--main-item-color);
 }
 
 code {
