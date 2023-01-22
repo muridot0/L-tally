@@ -1,0 +1,116 @@
+.logo {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: white;
+}
+
+.loginLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.loginLogo p {
+  font-size: 1.75rem;
+}
+
+.loginLogo span {
+  font-size: 4rem;
+}
+
+.icon {
+  color: var(--main-item-color);
+  font-size: 3rem;
+}
+
+.headerTop {
+  font-weight: bold;
+  margin: 0;
+}
+
+.headerBottom {
+  color: var(--passive-color);
+  margin: 0;
+}
+
+.login {
+  margin-top: 5rem;
+  justify-content: center;
+  display: flex;
+}
+
+.loginCard {
+  position: fixed;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 0.5rem;
+  width: 40%;
+  padding: 2.25rem;
+}
+
+.loginHeader {
+  margin-top: 0.7rem;
+  display: flex;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--main-item-color);
+}
+
+.inputs {
+  margin: 1rem 0 0;
+  font-size: 1.25rem;
+}
+
+.inputs label {
+  display: block;
+  margin-top: 1.5rem;
+}
+
+.inputs input {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.inputs input:focus {
+  outline-color: var(--main-item-color);
+}
+
+.submit {
+  margin-top: 1.5rem;
+  text-align: center;
+  align-items: center;
+}
+
+.submit button {
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: var(--main-bg-color);
+  border: none;
+}
+
+.submit button:hover {
+  cursor: pointer;
+  background-color: var(--main-item-color);
+  color: white;
+  transition: 0.1s ease-in-out;
+}
+
+.toggleSignIn {
+  display: flex;
+  align-items: center;
+}
+
+.toggleSignIn a {
+  text-decoration: none;
+  align-items: center;
+}

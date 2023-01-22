@@ -1,6 +1,6 @@
 .openedDrawer {
   width: 20rem;
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
   height: 100%;
   left: 0;
   position: fixed;
