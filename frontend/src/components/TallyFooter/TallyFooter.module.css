@@ -20,6 +20,6 @@
 }
 
 .logout p:hover{
-  color: var(--subtract-button-color);
+  color: var(--main-item-color);
   transition: 0.2s ease;
 }

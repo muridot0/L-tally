@@ -5,7 +5,7 @@ import { item } from '../Menu/types/items';
 import clsx from 'clsx';
 import styles from './MenuGroup.module.css';
 import { v4 as uuidv4 } from 'uuid';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export interface Props {
   items: item[];
@@ -17,6 +17,7 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
   const [menuItems, setMenuItems] = useState(items);
   const [spaceName, setSpaceName] = useState(String);
   const [activeInput, setActiveInput] = useState(false);
+
 
   function addMenuItems(name: string) {
     const exists = menuItems.find((item) => item.spaceName === name);
@@ -32,6 +33,7 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
         spaceName: spaceName,
         id: uuidv4(),
         route: `/${spaceName}`,
+        tally: [],
       },
     ];
     setMenuItems(newArr.filter((arr) => arr.spaceName.trim() !== ''));
@@ -86,70 +88,66 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
   };
 
   return (
-    <div>
-      <div className={styles.menuHeader}>
-        <p>Spaces</p>
-        <span
-          className={clsx('material-symbols-rounded', styles.addButton)}
-          onClick={showInput}
-        >
-          add
-        </span>
-      </div>
-      <div className={styles.menuItemGroup}>
-        {menuItems.map((menuItem, index) => {
-          return (
-            <>
-              <NavLink
-                key={index}
-                to={menuItem.route}
-                className={styles.navStyle}
+        <div>
+          <div className={styles.menuHeader}>
+            <p>Spaces</p>
+            <span
+              className={clsx('material-symbols-rounded', styles.addButton)}
+              onClick={showInput}
+            >
+              add
+            </span>
+          </div>
+          <div className={styles.menuItemGroup}>
+            {menuItems.map((menuItem, index) => {
+              return (
+                <>
+                  <Link to={menuItem.route} className={styles.navStyle}>
+                    <Menu
+                      key={index}
+                      item={menuItem}
+                      isActive={menuItem.id === selectedItemId}
+                      onClick={() => onClick(menuItem.id)}
+                      onChange={(e: any) => {
+                        handleChangeItem(e, menuItem);
+                      }}
+                      onDelete={() => {
+                        handleDeleteItem(menuItem.spaceName);
+                      }}
+                    />
+                  </Link>
+                </>
+              );
+            })}
+          </div>
+          {activeInput ? (
+            <div className={clsx(styles.input)}>
+              <span className={clsx('material-symbols-rounded', styles.icon)}>
+                category
+              </span>
+              <input
+                className={styles.inputField}
+                type='text'
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                autoFocus
+              />
+              <span
+                className={clsx('material-symbols-rounded', styles.doneButton)}
+                onClick={confirmAdd}
               >
-                <Menu
-                  item={menuItem}
-                  isActive={menuItem.id === selectedItemId}
-                  onClick={() => onClick(menuItem.id)}
-                  onChange={(e: any) => {
-                    handleChangeItem(e, menuItem);
-                  }}
-                  onDelete={() => {
-                    handleDeleteItem(menuItem.spaceName);
-                  }}
-                />
-              </NavLink>
-              <Outlet />
-            </>
-          );
-        })}
-      </div>
-      {activeInput ? (
-        <div className={clsx(styles.input)}>
-          <span className={clsx('material-symbols-rounded', styles.icon)}>
-            category
-          </span>
-          <input
-            className={styles.inputField}
-            type='text'
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            autoFocus
-          />
-          <span
-            className={clsx('material-symbols-rounded', styles.doneButton)}
-            onClick={confirmAdd}
-          >
-            done
-          </span>
-          <span
-            className={clsx('material-symbols-rounded', styles.closeButton)}
-            onClick={closeInput}
-          >
-            close
-          </span>
+                done
+              </span>
+              <span
+                className={clsx('material-symbols-rounded', styles.closeButton)}
+                onClick={closeInput}
+              >
+                close
+              </span>
+            </div>
+          ) : null}
+          <hr className={styles.divider} />
         </div>
-      ) : null}
-      <hr className={styles.divider} />
-    </div>
   );
 }
 

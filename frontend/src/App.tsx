@@ -1,12 +1,20 @@
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import DefaultPage from './components/DefaultPage/DefaultPage';
+import { SpaceContext } from './contexts/space';
+import DefaultPage from './Pages/DefaultPage/DefaultPage';
+import Home from './Pages/Home/Home';
 
 function App() {
+  const [activeMenuItem, setActiveMenuItem] = useState('');
+
   return (
-    <Routes>
-      <Route path='/' element={<DefaultPage />} />
-      <Route path=':space' element={<DefaultPage />} />
-    </Routes>
+    <SpaceContext.Provider value={{ activeMenuItem, setActiveMenuItem }}>
+      <Routes>
+        <Route path='/' element={<Home />}>
+          <Route path=':space' element={<DefaultPage />} />
+        </Route>
+      </Routes>
+    </SpaceContext.Provider>
   );
 }
 

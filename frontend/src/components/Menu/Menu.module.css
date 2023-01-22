@@ -6,6 +6,10 @@
   padding: 0.5rem 0.7rem;
 }
 
+.navStyle {
+  text-decoration: none;
+}
+
 .input {
   display: flex;
   flex-wrap: wrap;

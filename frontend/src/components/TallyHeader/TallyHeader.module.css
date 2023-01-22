@@ -35,7 +35,15 @@
   color: var(--close-button-color);
 }
 
+.close:hover {
+  cursor: pointer;
+}
+
 .burger {
   position: absolute;
   right: 1rem;
+}
+
+.burger:hover {
+  cursor: pointer;
 }

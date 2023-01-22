@@ -2,18 +2,22 @@ import clsx from 'clsx';
 import { tally } from '../Tally/types/tally';
 import Tally from '../Tally/Tally';
 import styles from './AddPerson.module.css';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
+import { SpaceContext } from '../../contexts/space';
 interface Props {
   tally: tally[];
-  openNav: boolean;
+  openNav?: boolean;
+  spaceId: String | null;
 }
 
-function AddPerson({ tally, openNav }: Props) {
+function AddPerson({ tally, openNav, spaceId }: Props) {
   const [tallyArr, setTallyArr] = useState(tally);
   const [person, setPerson] = useState(String);
   const [showInputTally, setShowInputTally] = useState(false);
+
+  const { activeMenuItem } = useContext(SpaceContext);
+
 
   const handleAddPerson = (name: string) => {
     const exists = tallyArr.find((tally) => tally.tallyName === name);
@@ -26,6 +30,7 @@ function AddPerson({ tally, openNav }: Props) {
       {
         tallyName: person,
         tallyNumber: 0,
+        spaceId: activeMenuItem,
         id: uuidv4(),
       },
     ];
@@ -99,7 +104,11 @@ function AddPerson({ tally, openNav }: Props) {
         className={clsx(styles.tallyGroup)}
       >
         {tallyArr.map((tallyItems, index) => {
-          return <Tally tally={tallyItems} key={index} />;
+          if(spaceId === tallyItems.spaceId) {
+            return <Tally tally={tallyItems} key={index} />;
+          }else {
+            return null
+          }
         })}
         {showInputTally ? dummyTally() : null}
         <span

@@ -9,6 +9,7 @@ export interface Props {
   onClick: VoidFunction;
   onChange: Function;
   onDelete: VoidFunction;
+  spaceCards?: object;
 }
 
 function Menu({ item, onClick, isActive, onChange, onDelete }: Props) {
