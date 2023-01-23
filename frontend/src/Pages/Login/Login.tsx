@@ -34,11 +34,13 @@ export default function Login() {
             </div>
           </form>
           <div className={styles.toggleSignIn}>
-            <p>Not registered yet? </p>
-            <a href='/'> Create an account </a>
-            <span className={clsx('material-symbols-rounded')}>
-              arrow_forward
-            </span>
+            <p>Not registered yet?</p>
+            <a href='/'>
+              Create an account
+              <span className={clsx('material-symbols-rounded')}>
+                arrow_forward
+              </span>
+            </a>
           </div>
         </div>
       </div>
