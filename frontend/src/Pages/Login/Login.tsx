@@ -37,7 +37,7 @@ export default function Login() {
             <p>Not registered yet?</p>
             <a href='/'>
               Create an account
-              <span className={clsx('material-symbols-rounded')}>
+              <span className={clsx('material-symbols-rounded', styles.forwardIcon)}>
                 arrow_forward
               </span>
             </a>
