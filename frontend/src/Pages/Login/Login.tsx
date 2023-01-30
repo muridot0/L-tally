@@ -1,7 +1,26 @@
 import styles from './Login.module.css';
 import clsx from 'clsx';
+import { useContext, useState } from 'react';
+import { LoginContext, User } from '../../contexts/login';
+import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+interface Props {
+  login: (user: User) => {}
+}
+
+export default function Login({ login }: Props) {
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(LoginContext)
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLogin = (e: any) => {
+    e.preventDefault()
+    setUser({...user, username: username, email: email, password: password})
+    navigate('/')
+  }
+
   return (
     <>
       <div className={styles.logo}>
@@ -23,14 +42,14 @@ export default function Login() {
           </div>
           <h2 className={styles.loginHeader}>Log in</h2>
           <form className={styles.inputs}>
-            <label htmlFor='name'>Full name</label>
-            <input type='text' id='name' />
+            <label htmlFor='username'>Username</label>
+            <input type='text' id='username' required value={username} onChange={(e) => setUsername(e.target.value)}/>
             <label htmlFor='email'>Email address</label>
-            <input type='text' id='email' />
+            <input type='text' id='email' required value={email} onChange={(e) => setEmail(e.target.value)} />
             <label htmlFor='password'>Password</label>
-            <input type='text' id='password' />
+            <input type='text' id='password' required value={password} onChange={(e) => setPassword(e.target.value)}/>
             <div className={styles.submit}>
-              <button>Log in</button>
+              <button onClick={(e) => handleLogin(e)}>Log in</button>
             </div>
           </form>
           <div className={styles.toggleSignIn}>
