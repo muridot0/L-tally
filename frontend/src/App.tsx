@@ -5,6 +5,7 @@ import DefaultPage from './Pages/DefaultPage/DefaultPage';
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
 import { LoginContext, User } from './contexts/login';
+import SignUp from './Pages/Login/Signup';
 
 function App() {
   const [activeMenuItem, setActiveMenuItem] = useState('');
@@ -21,7 +22,8 @@ function App() {
           <Route path='/' element={<Home />}>
             <Route path=':space' element={<DefaultPage />} />
           </Route>
-          <Route path='/login' element={<Login login={login} />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<SignUp/>} />
         </Routes>
       </SpaceContext.Provider>
     </LoginContext.Provider>

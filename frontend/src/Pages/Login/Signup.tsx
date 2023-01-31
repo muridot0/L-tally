@@ -1,27 +1,25 @@
 import styles from './Login.module.css';
 import clsx from 'clsx';
-import {  useState } from 'react';
+import { useContext, useState } from 'react';
+import { LoginContext, User } from '../../contexts/login';
 import { Link, useNavigate } from 'react-router-dom';
+import { UserService } from '../../services/user-service';
 import { AuthService } from '../../services/auth-service';
 
-
-export default function Login() {
+export default function SignUp() {
   const navigate = useNavigate();
-  const [message, setMessage] = useState('')
+  const { user, setUser } = useContext(LoginContext)
   const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  async function handleLogin(e: any) {
+  async function handleSignUp(e: any) {
     e.preventDefault()
-    const strategy = "login";
-    await AuthService.login(username, password, strategy).then(() => {
+    await AuthService.register(username, email, password).then(() => {
       navigate("/");
-      window.location.reload();
-    },
-    error => {
-      const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-      setMessage(resMessage);
-    })
+      // window.location.reload();
+    });
+    setUser({...user, username: username, email: email, password: password})
   }
 
   return (
@@ -47,19 +45,18 @@ export default function Login() {
           <form className={styles.inputs}>
             <label htmlFor='username'>Username</label>
             <input type='text' id='username' required value={username} onChange={(e) => setUsername(e.target.value)}/>
+            <label htmlFor='email'>Email address</label>
+            <input type='text' id='email' required value={email} onChange={(e) => setEmail(e.target.value)} />
             <label htmlFor='password'>Password</label>
             <input type='text' id='password' required value={password} onChange={(e) => setPassword(e.target.value)}/>
             <div className={styles.submit}>
-              <button onClick={(e) => handleLogin(e)}>Log in</button>
+              <button onClick={(e) => handleSignUp(e)}>Sign up</button>
             </div>
-            {message && (
-              <div>{message}</div>
-            )}
           </form>
           <div className={styles.toggleSignIn}>
-            <p>Not registered yet?</p>
-            <Link to="/signup">
-              Create an account
+            <p>Already got an account?</p>
+            <Link to={'/login'}>
+              Log in
               <span className={clsx('material-symbols-rounded', styles.forwardIcon)}>
                 arrow_forward
               </span>

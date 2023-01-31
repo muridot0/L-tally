@@ -4,24 +4,21 @@
 // for more of what you can do here.
 import { Application } from '../declarations';
 import { Model, Mongoose } from 'mongoose';
-import  avatar  from './avatar.model';
 
 export default function (app: Application): Model<any> {
-  const avatarSchema = avatar(app);
   const modelName = 'users';
   const mongooseClient: Mongoose = app.get('mongooseClient');
   const { Schema } = mongooseClient;
-  const schema = new mongooseClient.Schema({
-  
-    email: { type: String, unique: true, lowercase: true },
-    password: { type: String },
-    avatar: avatarSchema.schema,
-    lTally: Number,
-    Space: { type: Schema.Types.ObjectId }
-  
-  }, {
+  const schema = new Schema({
+    email: { type: String, unique: true, lowercase: true, required: true },
+    password: { type: String, required: true},
+    username: { type: String, required: true, unique: true},
+    avatar: { type: String, required: false }
+  },
+  {
     timestamps: true
-  });
+  }
+  );
 
   // This is necessary to avoid model compilation errors in watch mode
   // see https://mongoosejs.com/docs/api/connection.html#connection_Connection-deleteModel

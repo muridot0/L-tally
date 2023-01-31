@@ -1,4 +1,4 @@
-// avatar-model.ts - A mongoose model
+// tally-model.ts - A mongoose model
 //
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
@@ -6,11 +6,14 @@ import { Application } from '../declarations';
 import { Model, Mongoose } from 'mongoose';
 
 export default function (app: Application): Model<any> {
-  const modelName = 'avatar';
+  const modelName = 'tally';
   const mongooseClient: Mongoose = app.get('mongooseClient');
   const { Schema } = mongooseClient;
-  const avatarSchema = new Schema({
-    src: { type: String, required: true },
+  const schema = new Schema({
+    tallyName: { type: String, required: true },
+    tallyNumber: { type: Number, required: true, default: 0},
+    userId: {type: Schema.Types.ObjectId, required: true},
+    spaceId: { type: Schema.Types.ObjectId, required: true}
   }, {
     timestamps: true
   });
@@ -20,5 +23,5 @@ export default function (app: Application): Model<any> {
   if (mongooseClient.modelNames().includes(modelName)) {
     (mongooseClient as any).deleteModel(modelName);
   }
-  return mongooseClient.model<any>(modelName, avatarSchema);
+  return mongooseClient.model<any>(modelName, schema);
 }

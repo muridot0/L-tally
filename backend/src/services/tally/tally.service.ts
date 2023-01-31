@@ -1,14 +1,14 @@
-// Initializes the `avatar` service on path `/avatar`
+// Initializes the `tally` service on path `/tally`
 import { ServiceAddons } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
-import { Avatar } from './avatar.class';
-import createModel from '../../models/avatar.model';
-import hooks from './avatar.hooks';
+import { Tally } from './tally.class';
+import createModel from '../../models/tally.model';
+import hooks from './tally.hooks';
 
 // Add this service to the service type index
 declare module '../../declarations' {
   interface ServiceTypes {
-    'avatar': Avatar & ServiceAddons<any>;
+    'tally': Tally & ServiceAddons<any>;
   }
 }
 
@@ -19,10 +19,10 @@ export default function (app: Application): void {
   };
 
   // Initialize our service with any options it requires
-  app.use('/avatar', new Avatar(options, app));
+  app.use('/tally', new Tally(options, app));
 
   // Get our initialized service so that we can register hooks
-  const service = app.service('avatar');
+  const service = app.service('tally');
 
   service.hooks(hooks);
 }

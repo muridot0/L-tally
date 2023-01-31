@@ -9,11 +9,17 @@ export default function (app: Application): Model<any> {
   const modelName = 'space';
   const mongooseClient: Mongoose = app.get('mongooseClient');
   const { Schema } = mongooseClient;
-  const schema = new Schema({
-    userId: { type: [Schema.Types.ObjectId], required: true }
-  }, {
-    timestamps: true
-  });
+  const schema = new Schema(
+    {
+      userId: { type: Schema.Types.ObjectId, required: true},
+      spaceName: { type: String, required: true, unique: true },
+      route: { type: String, required: true, unique: true },
+      meta: { type: String, required: false }
+    },
+    {
+      timestamps: true
+    }
+  );
 
   // This is necessary to avoid model compilation errors in watch mode
   // see https://mongoosejs.com/docs/api/connection.html#connection_Connection-deleteModel
