@@ -102,9 +102,8 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
             {menuItems.map((menuItem, index) => {
               return (
                 <>
-                  <Link to={menuItem.route} className={styles.navStyle}>
+                  <Link to={menuItem.route} className={styles.navStyle} key={index}>
                     <Menu
-                      key={index}
                       item={menuItem}
                       isActive={menuItem.id === selectedItemId}
                       onClick={() => onClick(menuItem.id)}

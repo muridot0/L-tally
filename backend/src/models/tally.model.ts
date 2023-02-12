@@ -12,7 +12,6 @@ export default function (app: Application): Model<any> {
   const schema = new Schema({
     tallyName: { type: String, required: true },
     tallyNumber: { type: Number, required: true, default: 0},
-    userId: {type: Schema.Types.ObjectId, required: true},
     spaceId: { type: Schema.Types.ObjectId, required: true}
   }, {
     timestamps: true

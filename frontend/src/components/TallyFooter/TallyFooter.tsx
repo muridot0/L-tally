@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import styles from './TallyFooter.module.css';
 
 interface Props {
-  userName: string;
+  userName: string | undefined;
   userIcon: string;
   onClick: VoidFunction;
 }

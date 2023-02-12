@@ -1,27 +1,37 @@
 import styles from './Login.module.css';
 import clsx from 'clsx';
-import {  useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/auth-service';
-
+import { LoginContext } from '../../contexts/login';
 
 export default function Login() {
   const navigate = useNavigate();
-  const [message, setMessage] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+
+  useEffect(() => {
+    setMessage('')
+  }, [username, password])
+
 
   async function handleLogin(e: any) {
-    e.preventDefault()
-    const strategy = "login";
-    await AuthService.login(username, password, strategy).then(() => {
-      navigate("/");
-      window.location.reload();
-    },
-    error => {
-      const resMessage = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
-      setMessage(resMessage);
-    })
+    e.preventDefault();
+    const strategy = 'login';
+    await AuthService.login(username, password, strategy)
+      .then(() => {
+        navigate('/');
+        window.location.reload();
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          setMessage('Invalid username or password');
+        } else {
+          setMessage('No server response');
+        }
+      });
   }
 
   return (
@@ -44,23 +54,42 @@ export default function Login() {
             <p className={styles.headerTop}>L-Tally</p>
           </div>
           <h2 className={styles.loginHeader}>Log in</h2>
+          {message && <p className={styles.invalid}>{message}</p>}
           <form className={styles.inputs}>
             <label htmlFor='username'>Username</label>
-            <input type='text' id='username' required value={username} onChange={(e) => setUsername(e.target.value)}/>
+            <input
+              type='text'
+              id='username'
+              required
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
             <label htmlFor='password'>Password</label>
-            <input type='text' id='password' required value={password} onChange={(e) => setPassword(e.target.value)}/>
+            <input
+              type='password'
+              id='password'
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <div className={styles.submit}>
-              <button onClick={(e) => handleLogin(e)}>Log in</button>
+              <button type='submit' onClick={(e) => handleLogin(e)} className={
+                  username && password ? styles.btn : styles.disabledBtn
+                }
+                disabled={
+                  !username || !password ? true : false
+                }>
+                Log in
+              </button>
             </div>
-            {message && (
-              <div>{message}</div>
-            )}
           </form>
           <div className={styles.toggleSignIn}>
             <p>Not registered yet?</p>
-            <Link to="/signup">
+            <Link to='/signup'>
               Create an account
-              <span className={clsx('material-symbols-rounded', styles.forwardIcon)}>
+              <span
+                className={clsx('material-symbols-rounded', styles.forwardIcon)}
+              >
                 arrow_forward
               </span>
             </Link>

@@ -84,13 +84,46 @@
 }
 
 .inputs {
+  display: grid;
+  gap: 0.5rem;
   margin: 1rem 0 0;
   font-size: 1.25rem;
 }
 
 .inputs label {
-  display: block;
+  display: flex;
+  align-items: center;
   margin-top: 1.5rem;
+}
+
+.done {
+  color: var(--main-item-color);
+  font-size: 1.25rem;
+  margin-left: 0.25rem;
+}
+
+.close {
+  color: var(--close-button-color);
+  font-size: 1.25rem;
+  margin-left: 0.25rem;
+}
+
+.info {
+  font-size: 1rem;
+}
+
+.validationInfo {
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--main-item-color);
+  color: #fff;
+  padding: 0.25rem;
+  position: relative;
+}
+
+.labels {
+  display: flex;
+  align-items: center;
 }
 
 .inputs input {
@@ -114,7 +147,7 @@
   align-items: center;
 }
 
-.submit button {
+.btn {
   font-size: 1.25rem;
   font-weight: 700;
   border-radius: 0.5rem;
@@ -123,7 +156,16 @@
   border: none;
 }
 
-.submit button:hover {
+
+.disabledBtn{
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: none;
+}
+
+.btn:hover {
   cursor: pointer;
   background-color: var(--main-item-color);
   color: white;
@@ -146,5 +188,9 @@
 
 .forwardIcon {
   font-size: 1.25rem;
+}
+
+.invalid {
+  color: red;
 }
 
