@@ -1,32 +1,57 @@
 import clsx from 'clsx';
 import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Space } from '../../models/space';
+import { SpaceService } from '../../services/space-service';
 import styles from './Menu.module.css';
-import { item } from './types/items';
 
 export interface Props {
-  item: item;
-  isActive?: boolean;
-  onClick: VoidFunction;
-  onChange: Function;
+  item: Space;
   onDelete: VoidFunction;
   spaceCards?: object;
 }
 
-function Menu({ item, onClick, isActive, onChange, onDelete }: Props) {
+function Menu({ item, onDelete }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
   const [cancelSpaceName, setCancelSpaceName] = useState(item.spaceName);
+  const [editedSpaceName, setEditedSpaceName] = useState('')
+  const [menuItem, setMenuItem] = useState(item)
+  const navigate = useNavigate();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      SpaceService.patchSpace({...item, spaceName: editedSpaceName, route: `/${editedSpaceName}`})
+      navigate(`/${editedSpaceName}`)
       setIsEditing(false);
       setShowIcons(false);
+      setEditedSpaceName('')
     }
   };
 
+  const confirmEdit = () => {
+    SpaceService.patchSpace({...item, spaceName: editedSpaceName, route: `/${editedSpaceName}`})
+    navigate(`/${editedSpaceName}`)
+    setIsEditing(false);
+    setShowIcons(false);
+    setEditedSpaceName('')
+  }
+
   const handleCancel = () => {
-    item.spaceName = cancelSpaceName;
+    menuItem.spaceName = cancelSpaceName;
   };
+
+  const handleChangeItem = (e: any, oldItem: Space) => {
+    setMenuItem(() => {
+        setEditedSpaceName(e.target.value)
+        return {
+          ...oldItem,
+          spaceName: e.target.value,
+          route: `/${e.target.value}`
+        }
+      }
+    );
+  }
 
   let menuContent;
   if (isEditing) {
@@ -36,19 +61,16 @@ function Menu({ item, onClick, isActive, onChange, onDelete }: Props) {
           category
         </span>
         <input
-          value={item.spaceName}
+          value={menuItem.spaceName}
           className={styles.inputField}
           type='text'
-          onChange={(e) => onChange(e)}
+          onChange={(e) => handleChangeItem(e, menuItem)}
           onKeyDown={handleKeyDown}
           autoFocus
         />
         <span
           className={clsx('material-symbols-rounded', styles.doneButton)}
-          onClick={() => {
-            setIsEditing(false);
-            setShowIcons(false);
-          }}
+          onClick={confirmEdit}
         >
           done
         </span>
@@ -70,12 +92,12 @@ function Menu({ item, onClick, isActive, onChange, onDelete }: Props) {
         <span className={clsx('material-symbols-rounded', styles.icon)}>
           category
         </span>
-        <span className={clsx(styles.activeTitle)}>{item.spaceName}</span>
+        <span className={clsx(styles.activeTitle)}>{menuItem.spaceName}</span>
         <span
           className={clsx('material-symbols-rounded', styles.editIcon)}
           onClick={() => {
             setIsEditing(true);
-            setCancelSpaceName(item.spaceName);
+            setCancelSpaceName(menuItem.spaceName);
           }}
         >
           edit
@@ -96,28 +118,31 @@ function Menu({ item, onClick, isActive, onChange, onDelete }: Props) {
   } else {
     menuContent = (
       <>
-        <div
-          id='menu'
-          className={clsx(styles.menuItem, {
-            [styles.activeItem]: isActive,
-          })}
-          onClick={onClick}
-        >
-          <span className={clsx('material-symbols-rounded', styles.icon)}>
-            category
-          </span>
-          <span className={clsx({ [styles.activeTitle]: isActive })}>
-            {item.spaceName}
-          </span>
-          {isActive ? (
-            <span
-              className={clsx('material-symbols-rounded', styles.moreIcon)}
-              onClick={() => setShowIcons(true)}
-            >
-              more_vert
+      <NavLink to={menuItem.route} className={styles.navStyle}>
+        {({isActive}) => (
+          <div
+            id='menu'
+            className={clsx(styles.menuItem, {
+              [styles.activeItem]: isActive,
+            })}
+          >
+            <span className={clsx('material-symbols-rounded', styles.icon)}>
+              category
             </span>
-          ) : null}
-        </div>
+            <span className={clsx({ [styles.activeTitle]: isActive })}>
+              {menuItem.spaceName}
+            </span>
+            {isActive ? (
+              <span
+                className={clsx('material-symbols-rounded', styles.moreIcon)}
+                onClick={() => setShowIcons(true)}
+              >
+                more_vert
+              </span>
+            ) : null}
+          </div>
+        )}
+      </NavLink>
       </>
     );
   }

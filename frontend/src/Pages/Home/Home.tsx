@@ -1,8 +1,7 @@
-import { useState, useCallback, useEffect, createContext, useContext } from 'react';
+import { useState, useCallback, useEffect, createContext } from 'react';
 import { Outlet, useNavigate  } from 'react-router-dom';
 import MenuDrawer from '../../components/MenuDrawer/MenuDrawer';
 import TallyHeader from '../../components/TallyHeader/TallyHeader';
-import { LoginContext } from '../../contexts/login';
 const Quotes = require('randomquote-api');
 
 export const OpenContext = createContext({
@@ -10,7 +9,6 @@ export const OpenContext = createContext({
 });
 
 export default function Home() {
-  const loginContext = useContext(LoginContext)
   const navigate = useNavigate()
   const [quote, setQuote] = useState(String);
   const [open, setOpen] = useState(false);

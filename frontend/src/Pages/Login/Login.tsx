@@ -1,9 +1,8 @@
 import styles from './Login.module.css';
 import clsx from 'clsx';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/auth-service';
-import { LoginContext } from '../../contexts/login';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -11,9 +10,8 @@ export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-
   useEffect(() => {
-    setMessage('')
+    setMessage('');
   }, [username, password])
 
 

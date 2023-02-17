@@ -1,25 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import Menu from '../Menu/Menu';
-import { item } from '../Menu/types/items';
 import clsx from 'clsx';
 import styles from './MenuGroup.module.css';
 import { v4 as uuidv4 } from 'uuid';
-import { Link } from 'react-router-dom';
+import { SpaceService } from '../../services/space-service';
+import { Space } from '../../models/space';
 
-export interface Props {
-  items: item[];
-  selectedItemId: string | null;
-  onClick: (id: string) => void;
-}
-
-function MenuGroup({ items, selectedItemId, onClick }: Props) {
-  const [menuItems, setMenuItems] = useState(items);
+function MenuGroup() {
+  const [menuItems, setMenuItems] = useState<Space[] | null>(null);
   const [spaceName, setSpaceName] = useState(String);
   const [activeInput, setActiveInput] = useState(false);
 
+  const getUserId = () => {
+    const loggedInUser = localStorage.getItem("user");
+    if(!loggedInUser){
+      return;
+    }
+    const parsedUser = JSON.parse(loggedInUser)
+    return parsedUser.user._id
+  }
 
-  function addMenuItems(name: string) {
+
+  useEffect(() => {
+    const getData = async () => {
+      setMenuItems(await SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {return res.data}))
+    }
+    getData()
+  },[])
+
+  useEffect(() => {
+
+  })
+
+
+
+  async function addMenuItems(name: string) {
+    if(!menuItems) {
+      return ;
+    }
     const exists = menuItems.find((item) => item.spaceName === name);
     if (exists) {
       alert('Can not create space name with a name that already exists');
@@ -29,14 +48,22 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
     let newArr = [
       ...menuItems,
       {
+        userId: getUserId(),
         meta: '',
         spaceName: spaceName,
-        id: uuidv4(),
+        _id: uuidv4(),
         route: `/${spaceName}`,
-        tally: [],
       },
     ];
     setMenuItems(newArr.filter((arr) => arr.spaceName.trim() !== ''));
+
+    await SpaceService.createSpace({
+      userId: getUserId(),
+      meta: '',
+      spaceName: spaceName,
+      _id: uuidv4(),
+      route: `/${spaceName}`,
+    })
   }
 
   const handleChange = (e: any) => {
@@ -57,9 +84,7 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      addMenuItems(spaceName);
-      setActiveInput(false);
-      setSpaceName('');
+      confirmAdd()
     }
   };
 
@@ -68,23 +93,12 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
     setSpaceName('');
   };
 
-  const handleChangeItem = (e: any, item: item) => {
-    setMenuItems(
-      menuItems.map((menuItem) => {
-        if (menuItem.spaceName !== item.spaceName) {
-          return menuItem;
-        } else {
-          return {
-            ...menuItem,
-            spaceName: e.target.value,
-          };
-        }
-      })
-    );
-  };
-
   const handleDeleteItem = (id: string) => {
-    setMenuItems(menuItems.filter((menuItem) => menuItem.spaceName !== id));
+    if(!menuItems) {
+      return;
+    }
+    setMenuItems(menuItems.filter((menuItem) => menuItem._id !== id));
+    SpaceService.deleteSpace(id)
   };
 
   return (
@@ -99,22 +113,16 @@ function MenuGroup({ items, selectedItemId, onClick }: Props) {
             </span>
           </div>
           <div className={styles.menuItemGroup}>
-            {menuItems.map((menuItem, index) => {
+            {menuItems?.map((menuItem, index) => {
               return (
                 <>
-                  <Link to={menuItem.route} className={styles.navStyle} key={index}>
-                    <Menu
-                      item={menuItem}
-                      isActive={menuItem.id === selectedItemId}
-                      onClick={() => onClick(menuItem.id)}
-                      onChange={(e: any) => {
-                        handleChangeItem(e, menuItem);
-                      }}
-                      onDelete={() => {
-                        handleDeleteItem(menuItem.spaceName);
-                      }}
-                    />
-                  </Link>
+                  <Menu
+                    key={index}
+                    item={menuItem}
+                    onDelete={() => {
+                      handleDeleteItem(menuItem._id);
+                    }}
+                  />
                 </>
               );
             })}
