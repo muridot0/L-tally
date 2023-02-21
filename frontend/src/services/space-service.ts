@@ -4,10 +4,6 @@ import authHeader from "./auth-header";
 import { BaseService } from "./base-service";
 
 export class SpaceService extends BaseService{
-  protected static getSpaces(): Promise<void | Space[]> {
-    return axios.get(`${this.root}/spaces/all`, {headers: authHeader()})
-  }
-
   static getSpacesByUserId(filter: string): Promise<Space[]> {
     return axios.get(`${this.root}/space?userId=${filter}`, {headers: authHeader()}).then((res) => {
       if(res.statusText !== 'OK') {

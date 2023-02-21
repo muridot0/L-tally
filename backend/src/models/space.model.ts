@@ -13,7 +13,7 @@ export default function (app: Application): Model<any> {
     {
       userId: { type: Schema.Types.ObjectId, required: true},
       spaceName: { type: String, required: true },
-      _id: {type: String, required: true, unique: true    },
+      _id: {type: String, required: true, unique: true },
       route: { type: String, required: true },
       meta: { type: String, required: false }
     },

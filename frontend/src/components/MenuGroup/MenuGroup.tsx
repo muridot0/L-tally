@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import Menu from '../Menu/Menu';
 import clsx from 'clsx';
@@ -6,11 +6,16 @@ import styles from './MenuGroup.module.css';
 import { v4 as uuidv4 } from 'uuid';
 import { SpaceService } from '../../services/space-service';
 import { Space } from '../../models/space';
+import { useNavigate } from 'react-router-dom';
+import { SpaceContext } from '../../contexts/space';
 
 function MenuGroup() {
   const [menuItems, setMenuItems] = useState<Space[] | null>(null);
   const [spaceName, setSpaceName] = useState(String);
   const [activeInput, setActiveInput] = useState(false);
+  const navigate = useNavigate();
+
+  const { setActiveMenuItem } = useContext(SpaceContext)
 
   const getUserId = () => {
     const loggedInUser = localStorage.getItem("user");
@@ -28,12 +33,6 @@ function MenuGroup() {
     }
     getData()
   },[])
-
-  useEffect(() => {
-
-  })
-
-
 
   async function addMenuItems(name: string) {
     if(!menuItems) {
@@ -64,6 +63,7 @@ function MenuGroup() {
       _id: uuidv4(),
       route: `/${spaceName}`,
     })
+    navigate(`/${spaceName}`)
   }
 
   const handleChange = (e: any) => {
@@ -122,6 +122,7 @@ function MenuGroup() {
                     onDelete={() => {
                       handleDeleteItem(menuItem._id);
                     }}
+                    onClick={() => setActiveMenuItem(menuItem._id)}
                   />
                 </>
               );

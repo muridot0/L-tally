@@ -6,7 +6,19 @@
 }
 
 .tallyHeader {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-wrap: break-word;
+}
+
+.editButton {
+  margin: 0 0 0 auto;
+  cursor: pointer;
+}
+
+.tallyName {
+  margin: 0 0 0 auto;
   font-size: 2.5rem;
 }
 
@@ -40,4 +52,60 @@
 .tally {
   margin: 0rem 1rem;
   font-size: 3.5rem;
+}
+
+.nameInputField {
+  font-size: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+}
+.numberInputField {
+  font-size: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.5rem;
+  background-color: var(--main-bg-color);
+}
+
+.inputField:focus{
+  outline-color: var(--main-item-color)
+}
+
+.delete {
+  color: var(--close-button-color);
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.done {
+  cursor: pointer;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--main-item-color)
+}
+
+.editIcons {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.editIcons span {
+  padding: 0 0.5rem 0 0.5rem;
 }

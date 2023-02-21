@@ -17,7 +17,7 @@ function DefaultPage() {
     }
   });
 
-  return <AddPerson tally={[]} openNav={open} spaceId={activeMenuItem} />;
+  return <AddPerson openNav={open} spaceId={activeMenuItem} />;
 }
 
 export default DefaultPage;

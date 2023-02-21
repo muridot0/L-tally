@@ -7,11 +7,12 @@ import styles from './Menu.module.css';
 
 export interface Props {
   item: Space;
+  onClick: VoidFunction;
   onDelete: VoidFunction;
   spaceCards?: object;
 }
 
-function Menu({ item, onDelete }: Props) {
+function Menu({ item, onClick, onDelete }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
   const [cancelSpaceName, setCancelSpaceName] = useState(item.spaceName);
@@ -125,6 +126,7 @@ function Menu({ item, onDelete }: Props) {
             className={clsx(styles.menuItem, {
               [styles.activeItem]: isActive,
             })}
+            onClick={onClick}
           >
             <span className={clsx('material-symbols-rounded', styles.icon)}>
               category

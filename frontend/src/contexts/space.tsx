@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface spaceContextType {
-  activeMenuItem: string | null;  
+  activeMenuItem: string;
   setActiveMenuItem: (id: string) => void;
 }
 

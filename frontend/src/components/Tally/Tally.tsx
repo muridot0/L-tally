@@ -1,45 +1,154 @@
-import { tally } from './types/tally';
 import clsx from 'clsx';
 import styles from './Tally.module.css';
 import { useState } from 'react';
+import { TallyCard } from '../../models/tallyCard';
+import { TallyService } from '../../services/tally-service';
 
 interface Props {
-  tally: tally;
+  tally: TallyCard;
 }
 
 function Tally({ tally }: Props) {
-  const [count, setCount] = useState(tally.tallyNumber);
+  const [isEditing, setIsEditing] = useState(false);
+  const [tallyCard, setTallyCard] = useState(tally);
 
   const increaseTally = () => {
-    setCount(count => count + 1);
+    setTallyCard(() => {
+      return {
+        ...tallyCard,
+        tallyNumber: tallyCard.tallyNumber++
+      };
+    });
   };
 
   const decreaseTally = () => {
-    if (count > 0) {
-      setCount(count => count - 1);
+    if (tallyCard.tallyNumber > 0) {
+      setTallyCard(() => {
+        return {
+          ...tallyCard,
+          tallyNumber: tallyCard.tallyNumber--
+        };
+      });
     }
   };
 
-  return (
-    <div className={clsx(styles.tallyCard)}>
-      <span className={clsx(styles.tallyHeader)}>{tally.tallyName}</span>
-      <div className={clsx(styles.tallyContent)}>
-        <span
-          className={clsx('material-symbols-rounded', styles.subtractButton)}
-          onClick={decreaseTally}
-        >
-          do_not_disturb_on
-        </span>
-        <span className={clsx(styles.tally)}>{count}</span>
-        <span
-          className={clsx('material-symbols-rounded', styles.addButton)}
-          onClick={increaseTally}
-        >
-          add_circle
-        </span>
+  const handleChangeTallyName = (e: any, oldTally: TallyCard) => {
+    setTallyCard(() => {
+      if (!e.target.value) {
+        return oldTally;
+      }
+      return {
+        ...oldTally,
+        tallyName: e.target.value
+      };
+    });
+  };
+
+  const handleChangeTallyNumber = (e: any, oldTally: TallyCard) => {
+    setTallyCard(() => {
+      if (e.target.value < 0) {
+        return oldTally;
+      }
+      return {
+        ...oldTally,
+        tallyNumber: e.target.value
+      };
+    });
+  };
+
+  const confirmEdit = () => {
+    TallyService.patchTally(tallyCard);
+    setIsEditing(false);
+  };
+
+  const handleDelete = (id: string) => {
+    // if(tallyCard._id ===)
+  }
+
+  let tallyContent;
+  if (isEditing) {
+    tallyContent = (
+      <div className={clsx(styles.tallyCard)}>
+        <div className={clsx(styles.input)}>
+          <input
+            type='text'
+            className={styles.nameInputField}
+            value={tallyCard.tallyName}
+            onChange={(e) => handleChangeTallyName(e, tallyCard)}
+            autoFocus
+          />
+        </div>
+        <div className={clsx(styles.tallyContent)}>
+          <span
+            className={clsx('material-symbols-rounded', styles.subtractButton)}
+            onClick={decreaseTally}
+          >
+            do_not_disturb_on
+          </span>
+          <input
+            type='number'
+            className={styles.numberInputField}
+            value={tallyCard.tallyNumber}
+            min='1'
+            onChange={(e) => handleChangeTallyNumber(e, tallyCard)}
+            autoFocus
+          />
+          <span
+            className={clsx('material-symbols-rounded', styles.addButton)}
+            onClick={increaseTally}
+          >
+            add_circle
+          </span>
+        </div>
+        <div className={clsx(styles.editIcons)}>
+          <span className={clsx('material-symbols-rounded', styles.delete)}
+          // onClick={handleDelete}
+          >
+            delete_forever
+          </span>
+          <span
+            className={clsx('material-symbols-rounded', styles.done)}
+            onClick={confirmEdit}
+          >
+            done
+          </span>
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    tallyContent = (
+      <div className={clsx(styles.tallyCard)}>
+        <div className={clsx(styles.tallyHeader)}>
+          <span className={clsx(styles.tallyName)}>{tallyCard.tallyName}</span>
+          <div
+            className={clsx(styles.editButton)}
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            <span className={clsx('material-symbols-rounded')}>more_vert</span>
+          </div>
+        </div>
+        <div className={clsx(styles.tallyContent)}>
+          <span
+            className={clsx('material-symbols-rounded', styles.subtractButton)}
+            onClick={decreaseTally}
+          >
+            do_not_disturb_on
+          </span>
+          <span className={clsx(styles.tally)}>{tallyCard.tallyNumber}</span>
+          <span
+            className={clsx('material-symbols-rounded', styles.addButton)}
+            onClick={increaseTally}
+          >
+            add_circle
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  return <>{tallyContent}</>;
 }
 
 export default Tally;

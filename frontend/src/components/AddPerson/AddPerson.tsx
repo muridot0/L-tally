@@ -1,25 +1,34 @@
 import clsx from 'clsx';
-import { tally } from '../Tally/types/tally';
 import Tally from '../Tally/Tally';
 import styles from './AddPerson.module.css';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { SpaceContext } from '../../contexts/space';
+import { TallyCard } from '../../models/tallyCard';
+import { TallyService } from '../../services/tally-service';
 interface Props {
-  tally: tally[];
   openNav?: boolean;
   spaceId: String | null;
 }
 
-function AddPerson({ tally, openNav, spaceId }: Props) {
-  const [tallyArr, setTallyArr] = useState(tally);
+function AddPerson({ openNav, spaceId }: Props) {
+  const [tallyArr, setTallyArr] = useState<TallyCard[] | null>(null);
   const [person, setPerson] = useState(String);
   const [showInputTally, setShowInputTally] = useState(false);
-
   const { activeMenuItem } = useContext(SpaceContext);
 
+  useEffect(() => {
+    const getData = async () => {
+      setTallyArr(await TallyService.getTallyBySpaceId(activeMenuItem).then((res: any) => {return res.data}))
+      console.log(await TallyService.getTallyBySpaceId(activeMenuItem).then((res: any) => {return res.data}))
+    }
+    getData()
+  },[activeMenuItem])
 
-  const handleAddPerson = (name: string) => {
+  const handleAddPerson = async (name: string) => {
+    if(!tallyArr) {
+      return ;
+    }
     const exists = tallyArr.find((tally) => tally.tallyName === name);
     if (exists) {
       alert('Tally name already exists!');
@@ -31,7 +40,7 @@ function AddPerson({ tally, openNav, spaceId }: Props) {
         tallyName: person,
         tallyNumber: 0,
         spaceId: activeMenuItem,
-        id: uuidv4(),
+        _id: uuidv4(),
       },
     ];
 
@@ -43,6 +52,13 @@ function AddPerson({ tally, openNav, spaceId }: Props) {
     }
 
     setTallyArr(newArr);
+
+    await TallyService.createTally({
+      tallyName: person,
+      tallyNumber: 0,
+      spaceId: activeMenuItem,
+      _id: uuidv4(),
+    })
   };
 
   const showInput = () => {
@@ -103,7 +119,7 @@ function AddPerson({ tally, openNav, spaceId }: Props) {
       <div
         className={clsx(styles.tallyGroup)}
       >
-        {tallyArr.map((tallyItems, index) => {
+        {tallyArr?.map((tallyItems, index) => {
           if(spaceId === tallyItems.spaceId) {
             return <Tally tally={tallyItems} key={index} />;
           }else {
