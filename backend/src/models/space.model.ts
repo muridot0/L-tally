@@ -11,13 +11,14 @@ export default function (app: Application): Model<any> {
   const { Schema } = mongooseClient;
   const schema = new Schema(
     {
+      _id: {type: String},
       userId: { type: Schema.Types.ObjectId, required: true},
       spaceName: { type: String, required: true },
-      _id: {type: String, required: true, unique: true },
       route: { type: String, required: true },
       meta: { type: String, required: false }
     },
     {
+      _id: false,
       timestamps: true
     }
   );

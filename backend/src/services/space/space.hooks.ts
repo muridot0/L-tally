@@ -6,7 +6,7 @@ const { authenticate } = authentication.hooks;
 
 export default {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [],
@@ -22,7 +22,15 @@ export default {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [
+      async (context: any) => {
+        const space = context.result;
+
+        await context.app.service(`tally`).remove(null, {
+          query: { spaceId: space._id }
+        });
+      }
+    ]
   },
 
   error: {

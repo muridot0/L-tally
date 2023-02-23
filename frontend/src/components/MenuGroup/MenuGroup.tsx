@@ -58,9 +58,9 @@ function MenuGroup() {
 
     await SpaceService.createSpace({
       userId: getUserId(),
+      _id: uuidv4(),
       meta: '',
       spaceName: spaceName,
-      _id: uuidv4(),
       route: `/${spaceName}`,
     })
     navigate(`/${spaceName}`)

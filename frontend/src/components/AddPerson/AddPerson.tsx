@@ -84,6 +84,14 @@ function AddPerson({ openNav, spaceId }: Props) {
     setPerson('');
   };
 
+  const handleDelete = (id: string) => {
+    if (!tallyArr) {
+      return ;
+    }
+    setTallyArr(tallyArr.filter(tallies => tallies._id !== id))
+    TallyService.deleteTally(id);
+  }
+
   function dummyTally() {
     return (
       <div className={clsx(styles.tallyCard)}>
@@ -116,23 +124,25 @@ function AddPerson({ openNav, spaceId }: Props) {
 
   return (
     <div className={clsx({ [styles.openDrawer]: openNav })}>
-      <div
-        className={clsx(styles.tallyGroup)}
-      >
-        {tallyArr?.map((tallyItems, index) => {
-          if(spaceId === tallyItems.spaceId) {
-            return <Tally tally={tallyItems} key={index} />;
-          }else {
-            return null
-          }
-        })}
-        {showInputTally ? dummyTally() : null}
-        <span
-          className={clsx('material-symbols-rounded', styles.addPerson)}
-          onClick={showInput}
+      <div className={clsx(styles.tallyContainer)}>
+        <div
+          className={clsx(styles.tallyGroup)}
         >
-          person_add
-        </span>
+          {tallyArr?.map((tallyItems, index) => {
+            if(spaceId === tallyItems.spaceId) {
+              return <Tally tally={tallyItems} key={index} onDelete={() => handleDelete(tallyItems._id)} />;
+            }else {
+              return null
+            }
+          })}
+          {showInputTally ? dummyTally() : null}
+          <span
+            className={clsx('material-symbols-rounded', styles.addPerson)}
+            onClick={showInput}
+          >
+            person_add
+          </span>
+        </div>
       </div>
     </div>
   );

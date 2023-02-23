@@ -18,7 +18,8 @@ export default function (app: Application): void {
   };
   const paginationOptions = {
     Model: createModel(app),
-    paginate: app.get('paginate')
+    paginate: app.get('paginate'),
+    multi: true
   };
 
 

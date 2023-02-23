@@ -10,11 +10,12 @@ export default function (app: Application): Model<any> {
   const mongooseClient: Mongoose = app.get('mongooseClient');
   const { Schema } = mongooseClient;
   const schema = new Schema({
-    _id: {type: String, required: true, unique: true },
+    _id: {type: String },
     tallyName: { type: String, required: true },
     tallyNumber: { type: Number, required: true, default: 0},
     spaceId: { type: String, required: true}
   }, {
+    _id: false,
     timestamps: true
   });
 

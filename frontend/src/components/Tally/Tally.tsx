@@ -6,9 +6,10 @@ import { TallyService } from '../../services/tally-service';
 
 interface Props {
   tally: TallyCard;
+  onDelete: VoidFunction;
 }
 
-function Tally({ tally }: Props) {
+function Tally({ tally, onDelete }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [tallyCard, setTallyCard] = useState(tally);
 
@@ -61,10 +62,6 @@ function Tally({ tally }: Props) {
     setIsEditing(false);
   };
 
-  const handleDelete = (id: string) => {
-    // if(tallyCard._id ===)
-  }
-
   let tallyContent;
   if (isEditing) {
     tallyContent = (
@@ -79,12 +76,6 @@ function Tally({ tally }: Props) {
           />
         </div>
         <div className={clsx(styles.tallyContent)}>
-          <span
-            className={clsx('material-symbols-rounded', styles.subtractButton)}
-            onClick={decreaseTally}
-          >
-            do_not_disturb_on
-          </span>
           <input
             type='number'
             className={styles.numberInputField}
@@ -93,16 +84,10 @@ function Tally({ tally }: Props) {
             onChange={(e) => handleChangeTallyNumber(e, tallyCard)}
             autoFocus
           />
-          <span
-            className={clsx('material-symbols-rounded', styles.addButton)}
-            onClick={increaseTally}
-          >
-            add_circle
-          </span>
         </div>
         <div className={clsx(styles.editIcons)}>
           <span className={clsx('material-symbols-rounded', styles.delete)}
-          // onClick={handleDelete}
+          onClick={onDelete}
           >
             delete_forever
           </span>

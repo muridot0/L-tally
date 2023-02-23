@@ -22,10 +22,14 @@
   }
 }
 
+.tallyContainer {
+  height: 35rem;
+  overflow-y: auto;
+}
+
 .tallyGroup {
   z-index: 1;
   position: relative;
-  overflow-y: auto;
   margin: 1rem 0;
   max-height: 35rem;
   display: grid;
