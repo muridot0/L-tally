@@ -4,7 +4,7 @@ import authHeader from "./auth-header";
 import { BaseService } from "./base-service";
 
 export class SpaceService extends BaseService{
-  static getSpacesByUserId(filter: string): Promise<Space[]> {
+  static getSpacesByUserId(filter: string): Promise<void | Space[]> {
     return axios.get(`${this.root}/space?userId=${filter}`, {headers: authHeader()}).then((res) => {
       if(res.statusText !== 'OK') {
         throw new Error(`Bad response code ${res.status} returned`)
@@ -17,15 +17,15 @@ export class SpaceService extends BaseService{
     })
   }
 
-  static createSpace(space: Space): Promise<void | Space>{
-    return axios.post(`${this.root}/space`, space, {headers: authHeader()})
+  static createSpace(space: Space) {
+    return void axios.post(`${this.root}/space`, space, {headers: authHeader()})
   }
 
-  static patchSpace(space: Space): Promise<void | Space>{
-    return axios.patch(`${this.root}/space/${space._id}`, space, {headers: authHeader()})
+  static patchSpace(space: Space) {
+    return void axios.patch(`${this.root}/space/${space._id}`, space, {headers: authHeader()})
   }
 
-  static deleteSpace(id: string): Promise<void | string>{
-    return axios.delete(`${this.root}/space/${id}`, {headers: authHeader()})
+  static deleteSpace(id: string) {
+    return void axios.delete(`${this.root}/space/${id}`, {headers: authHeader()})
   }
 }

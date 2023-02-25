@@ -18,7 +18,7 @@ export class AuthService {
     localStorage.clear();
   }
 
-  static register<T>(username: string, email: string, password: string): Promise<void | T> {
+  static register(username: string, email: string, password: string): Promise<void> {
     const url = `${this.root}/users`
     return axios.post(url, {username, email, password})
   }

@@ -8,14 +8,13 @@ import { SpaceService } from '../../services/space-service';
 import { Space } from '../../models/space';
 import { useNavigate } from 'react-router-dom';
 import { SpaceContext } from '../../contexts/space';
-import { LoginContext } from '../../contexts/login';
 
 interface Props {
   spaces: Space[] | null
 }
 
 function MenuGroup({spaces}: Props) {
-  const { activeMenuItem, setActiveMenuItem } = useContext(SpaceContext)
+  const { setActiveMenuItem } = useContext(SpaceContext)
   const [menuItems, setMenuItems] = useState<Space[] | null>(null);
   const [spaceName, setSpaceName] = useState(String);
   const [activeInput, setActiveInput] = useState(false);
@@ -25,29 +24,11 @@ function MenuGroup({spaces}: Props) {
   const getUserId = () => {
     const loggedInUser = localStorage.getItem("user");
     if(!loggedInUser){
-      return;
+      throw new Error(`Cannot parse null of user`);
     }
     const parsedUser = JSON.parse(loggedInUser)
     return parsedUser.user._id
   }
-
-  // const getSpaceId = () => {
-  //   const spaces = localStorage.getItem("spaces");
-  //   if(!spaces){
-  //     return;
-  //   }
-  //   const parsedSpaces: Space[] = JSON.parse(spaces).data;
-  //   for (let i = 0; i < parsedSpaces.length; i++){
-  //     if (parsedSpaces[i].spaceName === spaceName) {
-  //       return parsedSpaces[i]._id
-  //     }
-  //   }
-  //   console.log(parsedSpaces)
-  // }
-
-  // useEffect(() => {
-  //   getSpaceId()
-  // }, [])
 
   useEffect(() => {
     setMenuItems(spaces)

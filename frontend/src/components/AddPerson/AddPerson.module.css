@@ -23,7 +23,7 @@
 }
 
 .tallyContainer {
-  height: 35rem;
+  height: 80vh;
   overflow-y: auto;
 }
 
@@ -31,7 +31,7 @@
   z-index: 1;
   position: relative;
   margin: 1rem 0;
-  max-height: 35rem;
+  max-height: 100%;
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import styles from './Tally.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TallyCard } from '../../models/tallyCard';
 import { TallyService } from '../../services/tally-service';
 
@@ -13,8 +13,12 @@ function Tally({ tally, onDelete }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [tallyCard, setTallyCard] = useState(tally);
 
+  useEffect(() => {
+    TallyService.patchTallyNumber(tallyCard, tallyCard.tallyNumber)
+  },[tallyCard])
+
   const increaseTally = () => {
-    setTallyCard(() => {
+    setTallyCard((tallyCard) => {
       return {
         ...tallyCard,
         tallyNumber: tallyCard.tallyNumber++
@@ -24,7 +28,7 @@ function Tally({ tally, onDelete }: Props) {
 
   const decreaseTally = () => {
     if (tallyCard.tallyNumber > 0) {
-      setTallyCard(() => {
+      setTallyCard((tallyCard) => {
         return {
           ...tallyCard,
           tallyNumber: tallyCard.tallyNumber--

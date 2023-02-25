@@ -6,6 +6,7 @@ import TallyFooter from '../TallyFooter/TallyFooter';
 import styles from './MenuDrawer.module.css';
 import { AuthService } from '../../services/auth-service';
 import { LoginContext, User } from '../../contexts/login';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   openDrawer: boolean;
@@ -16,6 +17,7 @@ interface Props {
 function MenuDrawer({ openDrawer, quoteSupplier, }: Props) {
   const [user, setUser] = useState<User | null>(null)
   const { userSpaces } = useContext(LoginContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
     setUser(AuthService.getCurrentUser().user)
@@ -23,6 +25,7 @@ function MenuDrawer({ openDrawer, quoteSupplier, }: Props) {
 
   const handleLogout = () => {
     localStorage.clear()
+    navigate('/login')
   }
 
   return (
