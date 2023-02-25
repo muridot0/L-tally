@@ -9,6 +9,7 @@ export class SpaceService extends BaseService{
       if(res.statusText !== 'OK') {
         throw new Error(`Bad response code ${res.status} returned`)
       }
+      localStorage.setItem("spaces", JSON.stringify(res.data))
       return res.data
     }).catch((err) => {
       this.logError(err.message, `${this.root}/space?userId=${filter}`, err.stack)

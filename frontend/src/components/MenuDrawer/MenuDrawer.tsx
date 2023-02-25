@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import MenuGroup from '../MenuGroup/MenuGroup';
 import QuoteOfTheDay from '../QuoteOfTheDay/QuoteOfTheDay';
 import TallyFooter from '../TallyFooter/TallyFooter';
 import styles from './MenuDrawer.module.css';
 import { AuthService } from '../../services/auth-service';
-import { User } from '../../contexts/login';
+import { LoginContext, User } from '../../contexts/login';
 
 interface Props {
   openDrawer: boolean;
@@ -13,8 +13,9 @@ interface Props {
 }
 
 
-function MenuDrawer({ openDrawer, quoteSupplier }: Props) {
+function MenuDrawer({ openDrawer, quoteSupplier, }: Props) {
   const [user, setUser] = useState<User | null>(null)
+  const { userSpaces } = useContext(LoginContext)
 
   useEffect(() => {
     setUser(AuthService.getCurrentUser().user)
@@ -31,7 +32,7 @@ function MenuDrawer({ openDrawer, quoteSupplier }: Props) {
           { [styles.closedDrawer]: !openDrawer }
         )}
       >
-        <MenuGroup
+        <MenuGroup spaces={userSpaces}
         />
         <QuoteOfTheDay className={styles.quote} quote={quoteSupplier} />
         <TallyFooter userName={user?.username} userIcon='person' onClick={handleLogout} />

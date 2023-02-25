@@ -1,5 +1,6 @@
 import { HooksObject } from '@feathersjs/feathers';
 import * as authentication from '@feathersjs/authentication';
+import { HookContext } from '../../app';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { authenticate } = authentication.hooks;
@@ -23,7 +24,7 @@ export default {
     update: [],
     patch: [],
     remove: [
-      async (context: any) => {
+      async (context: HookContext) => {
         const space = context.result;
 
         await context.app.service(`tally`).remove(null, {

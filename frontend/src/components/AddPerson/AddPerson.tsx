@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { SpaceContext } from '../../contexts/space';
 import { TallyCard } from '../../models/tallyCard';
 import { TallyService } from '../../services/tally-service';
+import { Space } from '../../models/space';
 interface Props {
   openNav?: boolean;
   spaceId: String | null;
@@ -16,6 +17,24 @@ function AddPerson({ openNav, spaceId }: Props) {
   const [person, setPerson] = useState(String);
   const [showInputTally, setShowInputTally] = useState(false);
   const { activeMenuItem } = useContext(SpaceContext);
+
+  const getSpaceId = () => {
+    const spaces = localStorage.getItem("spaces");
+    if(!spaces){
+      return;
+    }
+    const parsedSpaces: Space[] = JSON.parse(spaces).data;
+    for (let i = 0; i < parsedSpaces.length; i++){
+      if (parsedSpaces[i]._id === activeMenuItem){
+        return
+      }
+    }
+    console.log(parsedSpaces)
+  }
+
+  useEffect(() => {
+    getSpaceId()
+  }, [])
 
   useEffect(() => {
     const getData = async () => {

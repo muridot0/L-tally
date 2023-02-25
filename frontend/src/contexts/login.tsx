@@ -1,4 +1,5 @@
 import React from 'react';
+import { Space } from '../models/space';
 
 type User = {
   username: string;
@@ -10,6 +11,8 @@ interface loginContextType {
   setUser: (user: User) => void;
   loggedIn: boolean;
   setLoggedIn: (id: boolean) => void;
+  userSpaces: Space[] | null;
+  setUserSpaces: (spaces: Space[]) => void;
 }
 
 export { type User };
@@ -20,6 +23,10 @@ export const LoginContext = React.createContext<loginContextType>({
   },
   loggedIn: false,
   setLoggedIn: () => {
+    throw new Error('Missing LoginContext.Provider')
+  },
+  userSpaces: [{ userId: '', _id: '', spaceName: '', route: '', meta: ''}],
+  setUserSpaces: () => {
     throw new Error('Missing LoginContext.Provider')
   }
 });

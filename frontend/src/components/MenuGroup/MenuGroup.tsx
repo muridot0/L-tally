@@ -8,14 +8,19 @@ import { SpaceService } from '../../services/space-service';
 import { Space } from '../../models/space';
 import { useNavigate } from 'react-router-dom';
 import { SpaceContext } from '../../contexts/space';
+import { LoginContext } from '../../contexts/login';
 
-function MenuGroup() {
+interface Props {
+  spaces: Space[] | null
+}
+
+function MenuGroup({spaces}: Props) {
+  const { activeMenuItem, setActiveMenuItem } = useContext(SpaceContext)
   const [menuItems, setMenuItems] = useState<Space[] | null>(null);
   const [spaceName, setSpaceName] = useState(String);
   const [activeInput, setActiveInput] = useState(false);
   const navigate = useNavigate();
 
-  const { setActiveMenuItem } = useContext(SpaceContext)
 
   const getUserId = () => {
     const loggedInUser = localStorage.getItem("user");
@@ -26,13 +31,27 @@ function MenuGroup() {
     return parsedUser.user._id
   }
 
+  // const getSpaceId = () => {
+  //   const spaces = localStorage.getItem("spaces");
+  //   if(!spaces){
+  //     return;
+  //   }
+  //   const parsedSpaces: Space[] = JSON.parse(spaces).data;
+  //   for (let i = 0; i < parsedSpaces.length; i++){
+  //     if (parsedSpaces[i].spaceName === spaceName) {
+  //       return parsedSpaces[i]._id
+  //     }
+  //   }
+  //   console.log(parsedSpaces)
+  // }
+
+  // useEffect(() => {
+  //   getSpaceId()
+  // }, [])
 
   useEffect(() => {
-    const getData = async () => {
-      setMenuItems(await SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {return res.data}))
-    }
-    getData()
-  },[])
+    setMenuItems(spaces)
+  },[spaces])
 
   async function addMenuItems(name: string) {
     if(!menuItems) {
@@ -44,21 +63,23 @@ function MenuGroup() {
       return;
     }
     setActiveInput(true);
+    let id = uuidv4();
     let newArr = [
       ...menuItems,
       {
         userId: getUserId(),
         meta: '',
         spaceName: spaceName,
-        _id: uuidv4(),
+        _id: id,
         route: `/${spaceName}`,
       },
     ];
     setMenuItems(newArr.filter((arr) => arr.spaceName.trim() !== ''));
+    setActiveMenuItem(id);
 
     await SpaceService.createSpace({
       userId: getUserId(),
-      _id: uuidv4(),
+      _id: id,
       meta: '',
       spaceName: spaceName,
       route: `/${spaceName}`,

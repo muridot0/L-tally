@@ -4,7 +4,7 @@ import authHeader from './auth-header';
 export class AuthService {
   protected static root = "http://localhost:3030";
 
-  static login<T>(username: string, password: string, strategy: string): Promise<void | T> {
+  static login(username: string, password: string, strategy: string): Promise<void> {
     const url = `${this.root}/authentication`;
     return axios.post(url, {strategy, username, password}).then(res => {
       if(res.data.accessToken){
@@ -15,7 +15,7 @@ export class AuthService {
   }
 
  static logout() {
-    localStorage.removeItem("user");
+    localStorage.clear();
   }
 
   static register<T>(username: string, email: string, password: string): Promise<void | T> {
