@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import MenuGroup from '../MenuGroup/MenuGroup';
 import QuoteOfTheDay from '../QuoteOfTheDay/QuoteOfTheDay';
 import TallyFooter from '../TallyFooter/TallyFooter';
 import styles from './MenuDrawer.module.css';
 import { AuthService } from '../../services/auth-service';
-import { LoginContext, User } from '../../contexts/login';
+import { LoginContext } from '../../contexts/login';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
@@ -15,17 +15,20 @@ interface Props {
 
 
 function MenuDrawer({ openDrawer, quoteSupplier, }: Props) {
-  const [user, setUser] = useState<User | null>(null)
-  const { userSpaces } = useContext(LoginContext)
+  const { userSpaces, user, setUser } = useContext(LoginContext)
   const navigate = useNavigate()
 
   useEffect(() => {
     setUser(AuthService.getCurrentUser().user)
-  }, [])
+  }, [setUser])
 
   const handleLogout = () => {
     localStorage.clear()
     navigate('/login')
+  }
+
+  if(!user){
+    return <></>;
   }
 
   return (
@@ -38,7 +41,7 @@ function MenuDrawer({ openDrawer, quoteSupplier, }: Props) {
         <MenuGroup spaces={userSpaces}
         />
         <QuoteOfTheDay className={styles.quote} quote={quoteSupplier} />
-        <TallyFooter userName={user?.username} userIcon='person' onClick={handleLogout} />
+        <TallyFooter userName={user.username} userIcon={user.avatar} onClick={handleLogout} />
       </div>
   );
 }

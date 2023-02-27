@@ -3,7 +3,7 @@ import { Space } from '../models/space';
 
 type User = {
   username: string;
-  avatar?: string;
+  avatar: string;
 };
 
 interface loginContextType {

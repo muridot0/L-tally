@@ -5,12 +5,10 @@ import { Params } from '@feathersjs/feathers';
 
 const gravatarUrl = 'https://s.gravatar.com/avatar';
 
-const query = 's=25';
-
 const getGravatar = (email: string) => {
   const hash = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
 
-  return `${gravatarUrl}/${hash}?${query}`;
+  return `${gravatarUrl}/${hash}`;
 }
 
 interface UserData {
