@@ -16,8 +16,8 @@ export class TallyService extends BaseService{
     })
   }
 
-  static createTally(tally: TallyCard) {
-    return void axios.post(`${this.root}/tally`, tally, {headers: authHeader()})
+  static createTally(tally: TallyCard): Promise<void> {
+    return axios.post(`${this.root}/tally`, tally, {headers: authHeader()})
   }
 
   static patchTally(tally: TallyCard) {

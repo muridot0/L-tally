@@ -20,7 +20,6 @@ function AddPerson({ openNav, spaceId }: Props) {
   useEffect(() => {
     const getData = async () => {
       setTallyArr(await TallyService.getTallyBySpaceId(activeMenuItem).then((res: any) => {return res.data}))
-      console.log(await TallyService.getTallyBySpaceId(activeMenuItem).then((res: any) => {return res.data}))
     }
     getData()
   },[activeMenuItem])
@@ -51,14 +50,12 @@ function AddPerson({ openNav, spaceId }: Props) {
       return;
     }
 
-    setTallyArr(newArr);
-
     await TallyService.createTally({
       tallyName: person,
       tallyNumber: 0,
       spaceId: activeMenuItem,
       _id: uuidv4(),
-    })
+    }).then(() => { setTallyArr(newArr)})
   };
 
   const showInput = () => {

@@ -17,15 +17,15 @@ export class SpaceService extends BaseService{
     })
   }
 
-  static createSpace(space: Space) {
-    return void axios.post(`${this.root}/space`, space, {headers: authHeader()})
+  static createSpace(space: Space): Promise<void> {
+    return axios.post(`${this.root}/space`, space, {headers: authHeader()})
   }
 
   static patchSpace(space: Space) {
     return void axios.patch(`${this.root}/space/${space._id}`, space, {headers: authHeader()})
   }
 
-  static deleteSpace(id: string) {
-    return void axios.delete(`${this.root}/space/${id}`, {headers: authHeader()})
+  static deleteSpace(id: string): Promise<void>{
+    return axios.delete(`${this.root}/space/${id}`, {headers: authHeader()})
   }
 }

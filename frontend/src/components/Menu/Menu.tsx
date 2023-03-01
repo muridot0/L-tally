@@ -20,16 +20,6 @@ function Menu({ item, onClick, onDelete }: Props) {
   const [menuItem, setMenuItem] = useState(item)
   const navigate = useNavigate();
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      SpaceService.patchSpace({...item, spaceName: editedSpaceName, route: `/${editedSpaceName}`})
-      navigate(`/${editedSpaceName}`)
-      setIsEditing(false);
-      setShowIcons(false);
-      setEditedSpaceName('')
-    }
-  };
-
   const confirmEdit = () => {
     SpaceService.patchSpace({...item, spaceName: editedSpaceName, route: `/${editedSpaceName}`})
     navigate(`/${editedSpaceName}`)
@@ -37,6 +27,12 @@ function Menu({ item, onClick, onDelete }: Props) {
     setShowIcons(false);
     setEditedSpaceName('')
   }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      confirmEdit()
+    }
+  };
 
   const handleCancel = () => {
     menuItem.spaceName = cancelSpaceName;
