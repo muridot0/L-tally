@@ -1,27 +1,38 @@
 import styles from './Login.module.css';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/auth-service';
+import { SpaceContext } from '../../contexts/space';
+import { SpaceService } from '../../services/space-service';
 
 export default function Login() {
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { setActiveMenuItem } = useContext(SpaceContext);
 
   useEffect(() => {
     setMessage('');
-  }, [username, password])
-
+  }, [username, password]);
 
   async function handleLogin(e: any) {
     e.preventDefault();
     const strategy = 'login';
     await AuthService.login(username, password, strategy)
       .then(() => {
-        navigate('/');
-        window.location.reload();
+        const getUserId = () => {
+          const loggedInUser = window.localStorage.getItem("user");
+          if(!loggedInUser){
+            return;
+          }
+          const parsedUser = JSON.parse(loggedInUser)
+          return parsedUser.user._id
+        }
+         SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {
+          navigate(res.data[0]['route'])
+         })
       })
       .catch((err) => {
         if (err.response.status === 401) {
@@ -29,8 +40,10 @@ export default function Login() {
         } else {
           setMessage('No server response');
         }
-      });
+      })
   }
+
+
 
   return (
     <>
@@ -71,12 +84,14 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <div className={styles.submit}>
-              <button type='submit' onClick={(e) => handleLogin(e)} className={
+              <button
+                type='submit'
+                onClick={(e) => handleLogin(e)}
+                className={
                   username && password ? styles.btn : styles.disabledBtn
                 }
-                disabled={
-                  !username || !password ? true : false
-                }>
+                disabled={!username || !password ? true : false}
+              >
                 Log in
               </button>
             </div>

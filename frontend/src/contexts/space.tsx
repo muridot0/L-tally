@@ -5,4 +5,23 @@ interface spaceContextType {
   setActiveMenuItem: (id: string) => void;
 }
 
-export const SpaceContext = React.createContext<spaceContextType>({activeMenuItem: '', setActiveMenuItem: () => {throw new Error('Missing SpaceContext.Provider')}})
+interface SpaceProviderProps extends React.PropsWithChildren {}
+
+const SpaceContext = React.createContext<spaceContextType>({
+  activeMenuItem: '',
+  setActiveMenuItem: () => {
+    throw new Error('Missing SpaceContext.Provider');
+  }
+});
+
+function SpaceProvider({ children }: SpaceProviderProps) {
+  const [activeMenuItem, setActiveMenuItem] = React.useState('');
+
+  return (
+    <SpaceContext.Provider value={{ activeMenuItem, setActiveMenuItem }}>
+      {children}
+    </SpaceContext.Provider>
+  );
+}
+
+export { SpaceProvider, SpaceContext };

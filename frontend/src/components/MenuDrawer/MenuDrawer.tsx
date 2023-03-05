@@ -23,7 +23,7 @@ function MenuDrawer({ openDrawer, quoteSupplier, }: Props) {
   }, [setUser])
 
   const handleLogout = () => {
-    localStorage.clear()
+    window.localStorage.clear()
     navigate('/login')
   }
 

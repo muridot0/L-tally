@@ -1,5 +1,5 @@
 export default function authHeader(){
-  let user = localStorage.getItem('user');
+  let user = window.localStorage.getItem('user');
 
   if(!user){
     throw new Error(`Cannot parse null of user`)

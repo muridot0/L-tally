@@ -14,7 +14,7 @@ interface Props {
 }
 
 function MenuGroup({spaces}: Props) {
-  const { setActiveMenuItem } = useContext(SpaceContext)
+  const { activeMenuItem, setActiveMenuItem } = useContext(SpaceContext)
   const [menuItems, setMenuItems] = useState<Space[] | null>(null);
   const [spaceName, setSpaceName] = useState(String);
   const [activeInput, setActiveInput] = useState(false);
@@ -22,7 +22,7 @@ function MenuGroup({spaces}: Props) {
 
 
   const getUserId = () => {
-    const loggedInUser = localStorage.getItem("user");
+    const loggedInUser = window.localStorage.getItem("user");
     if(!loggedInUser){
       throw new Error(`Cannot parse null of user`);
     }
@@ -33,6 +33,19 @@ function MenuGroup({spaces}: Props) {
   useEffect(() => {
     setMenuItems(spaces)
   },[spaces])
+
+  useEffect(() => {
+    const activeId = window.localStorage.getItem('activeMenuItem');
+
+    if(!activeId){
+      return;
+    }
+    setActiveMenuItem(activeId)
+  },[setActiveMenuItem])
+
+  useEffect(() => {
+    window.localStorage.setItem('activeMenuItem', activeMenuItem)
+  }, [activeMenuItem])
 
   async function addMenuItems(name: string) {
     if(!menuItems) {
@@ -100,11 +113,11 @@ function MenuGroup({spaces}: Props) {
     if(!menuItems) {
       return;
     }
-    SpaceService.deleteSpace(id).then(() =>
+    SpaceService.deleteSpace(id).then(() =>{
       setMenuItems(menuItems.filter((menuItem) => menuItem._id !== id))
-    )
+    })
 
-    const spaces = localStorage.getItem("spaces")
+    const spaces = window.localStorage.getItem("spaces")
 
     if(!spaces){
       return;

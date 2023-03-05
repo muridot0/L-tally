@@ -8,14 +8,14 @@ export class AuthService {
     const url = `${this.root}/authentication`;
     return axios.post(url, {strategy, username, password}).then(res => {
       if(res.data.accessToken){
-        localStorage.setItem("user", JSON.stringify(res.data));
+        window.localStorage.setItem("user", JSON.stringify(res.data));
       }
       return res.data
     })
   }
 
  static logout() {
-    localStorage.clear();
+    window.localStorage.clear();
   }
 
   static register(username: string, email: string, password: string): Promise<void> {
@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   static getCurrentUser() {
-    const user = localStorage.getItem('user');
+    const user = window.localStorage.getItem('user');
     if(!user){
       throw new Error()
     }
@@ -35,7 +35,7 @@ export class AuthService {
     const url = `${this.root}/users/all`
     return axios.get(url, {headers: authHeader()}).then(res => {
       if(res.data.accessToken){
-        localStorage.setItem("user", JSON.stringify(res.data));
+        window.localStorage.setItem("user", JSON.stringify(res.data));
       }
       const users: T[] = []
       users.push(res.data)

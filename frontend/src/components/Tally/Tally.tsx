@@ -12,10 +12,11 @@ interface Props {
 function Tally({ tally, onDelete }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [tallyCard, setTallyCard] = useState(tally);
+  const [addOrSubtractId, setAddOrSubtractId] = useState('');
 
   useEffect(() => {
-    TallyService.patchTallyNumber(tallyCard, tallyCard.tallyNumber)
-  },[tallyCard])
+    TallyService.patchTallyNumber(addOrSubtractId, tallyCard.tallyNumber)
+  },[addOrSubtractId, tallyCard.tallyNumber])
 
   const increaseTally = () => {
     setTallyCard((tallyCard) => {
@@ -28,6 +29,7 @@ function Tally({ tally, onDelete }: Props) {
 
   const decreaseTally = () => {
     if (tallyCard.tallyNumber > 0) {
+      setAddOrSubtractId(tallyCard._id)
       setTallyCard((tallyCard) => {
         return {
           ...tallyCard,
@@ -91,7 +93,10 @@ function Tally({ tally, onDelete }: Props) {
         </div>
         <div className={clsx(styles.editIcons)}>
           <span className={clsx('material-symbols-rounded', styles.delete)}
-          onClick={onDelete}
+          onClick={() => {
+            onDelete();
+            setIsEditing(false)
+          }}
           >
             delete_forever
           </span>
@@ -109,14 +114,7 @@ function Tally({ tally, onDelete }: Props) {
       <div className={clsx(styles.tallyCard)}>
         <div className={clsx(styles.tallyHeader)}>
           <span className={clsx(styles.tallyName)}>{tallyCard.tallyName}</span>
-          <div
-            className={clsx(styles.editButton)}
-            onClick={() => {
-              setIsEditing(true);
-            }}
-          >
-            <span className={clsx('material-symbols-rounded')}>more_vert</span>
-          </div>
+          <span className={clsx('material-symbols-rounded', styles.editButton)} onClick={() => setIsEditing(true)}>more_vert</span>
         </div>
         <div className={clsx(styles.tallyContent)}>
           <span
@@ -128,7 +126,10 @@ function Tally({ tally, onDelete }: Props) {
           <span className={clsx(styles.tally)}>{tallyCard.tallyNumber}</span>
           <span
             className={clsx('material-symbols-rounded', styles.addButton)}
-            onClick={increaseTally}
+            onClick={() => {
+              setAddOrSubtractId(tallyCard._id)
+              increaseTally()
+            }}
           >
             add_circle
           </span>

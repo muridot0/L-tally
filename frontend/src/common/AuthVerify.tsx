@@ -17,7 +17,7 @@ function AuthVerify({logOut}: Props){
   let location = useLocation();
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = window.localStorage.getItem("user");
 
     if(!user){
       return;

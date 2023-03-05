@@ -5,13 +5,13 @@ import TallyHeader from '../../components/TallyHeader/TallyHeader';
 const Quotes = require('randomquote-api');
 
 export const OpenContext = createContext({
-  open: false,
+  open: true,
 });
 
 export default function Home() {
   const navigate = useNavigate()
   const [quote, setQuote] = useState(String);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const value = {open}
 
 
@@ -30,7 +30,7 @@ export default function Home() {
   }, [getObject]);
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
+    const loggedInUser = window.localStorage.getItem("user");
     if(!loggedInUser){
       navigate('/login')
       window.location.reload();

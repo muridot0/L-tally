@@ -9,24 +9,34 @@ import { TallyService } from '../../services/tally-service';
 interface Props {
   openNav?: boolean;
   spaceId: String | null;
+  tallies: TallyCard[] | null;
 }
 
-function AddPerson({ openNav, spaceId }: Props) {
+function AddPerson({ openNav, spaceId, tallies }: Props) {
   const [tallyArr, setTallyArr] = useState<TallyCard[] | null>(null);
   const [person, setPerson] = useState(String);
   const [showInputTally, setShowInputTally] = useState(false);
   const { activeMenuItem } = useContext(SpaceContext);
 
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     setTallyArr(
+  //       await TallyService.getTallyBySpaceId(activeMenuItem).then(
+  //         (res: any) => {
+  //           return res.data;
+  //         }
+  //       )
+  //     );
+  //   };
+  //   getData();
+  // }, [activeMenuItem]);
   useEffect(() => {
-    const getData = async () => {
-      setTallyArr(await TallyService.getTallyBySpaceId(activeMenuItem).then((res: any) => {return res.data}))
-    }
-    getData()
-  },[activeMenuItem])
+    setTallyArr(tallies)
+  }, [tallies]);
 
   const handleAddPerson = async (name: string) => {
-    if(!tallyArr) {
-      return ;
+    if (!tallyArr) {
+      return;
     }
     const exists = tallyArr.find((tally) => tally.tallyName === name);
     if (exists) {
@@ -39,8 +49,8 @@ function AddPerson({ openNav, spaceId }: Props) {
         tallyName: person,
         tallyNumber: 0,
         spaceId: activeMenuItem,
-        _id: uuidv4(),
-      },
+        _id: uuidv4()
+      }
     ];
 
     const blank = newArr.find((arr) => arr.tallyName.trim() === '');
@@ -54,8 +64,10 @@ function AddPerson({ openNav, spaceId }: Props) {
       tallyName: person,
       tallyNumber: 0,
       spaceId: activeMenuItem,
-      _id: uuidv4(),
-    }).then(() => { setTallyArr(newArr)})
+      _id: uuidv4()
+    }).then(() => {
+      setTallyArr(newArr);
+    });
   };
 
   const showInput = () => {
@@ -63,7 +75,7 @@ function AddPerson({ openNav, spaceId }: Props) {
     setShowInputTally(true);
   };
 
-  const handleChange = (e: any) => {
+  const handleAddingTally = (e: any) => {
     e.preventDefault();
     setPerson(e.target.value);
   };
@@ -83,18 +95,23 @@ function AddPerson({ openNav, spaceId }: Props) {
 
   const handleDelete = (id: string) => {
     if (!tallyArr) {
-      return ;
+      return;
     }
-    setTallyArr(tallyArr.filter(tallies => tallies._id !== id))
-    TallyService.deleteTally(id);
-  }
+    setTallyArr(() => {
+      return tallyArr.filter(tally => {return tally._id !== id})
+    });
+    // setTallyArr(tallyArr.filter((tally) => {return tally._id !== id}));
+    // TallyService.deleteTally(id).then(() => {
+    //   // window.location.reload()
+    // })
+  };
 
   function dummyTally() {
     return (
       <div className={clsx(styles.tallyCard)}>
         <input
           className={clsx(styles.tallyHeader)}
-          onChange={handleChange}
+          onChange={handleAddingTally}
           onKeyDown={confirmAdd}
           autoFocus
         />
@@ -122,14 +139,18 @@ function AddPerson({ openNav, spaceId }: Props) {
   return (
     <div className={clsx({ [styles.openDrawer]: openNav })}>
       <div className={clsx(styles.tallyContainer)}>
-        <div
-          className={clsx(styles.tallyGroup)}
-        >
-          {tallyArr?.map((tallyItems, index) => {
-            if(spaceId === tallyItems.spaceId) {
-              return <Tally tally={tallyItems} key={index} onDelete={() => handleDelete(tallyItems._id)} />;
-            }else {
-              return null
+        <div className={clsx(styles.tallyGroup)}>
+          {tallyArr?.map((tallyItem, index) => {
+            if (spaceId === tallyItem.spaceId) {
+              return (
+                <Tally
+                  tally={tallyItem}
+                  key={index}
+                  onDelete={() => handleDelete(tallyItem._id)}
+                />
+              );
+            } else {
+              return null;
             }
           })}
           {showInputTally ? dummyTally() : null}

@@ -24,11 +24,11 @@ export class TallyService extends BaseService{
     return void axios.patch(`${this.root}/tally/${tally._id}`, tally, {headers: authHeader()})
   }
 
-  static patchTallyNumber(tally: TallyCard, count: number) {
-    return void axios.patch(`${this.root}/tally/${tally._id}`, {tallyNumber: count}, {headers: authHeader()})
+  static patchTallyNumber(id: string, count: number) {
+    return void axios.patch(`${this.root}/tally/${id}`, {tallyNumber: count}, {headers: authHeader()})
   }
 
-  static deleteTally(id: string) {
-    return void axios.delete(`${this.root}/tally/${id}`, {headers: authHeader()})
+  static deleteTally(id: string): Promise<void> {
+    return axios.delete(`${this.root}/tally/${id}`, {headers: authHeader()})
   }
 }
