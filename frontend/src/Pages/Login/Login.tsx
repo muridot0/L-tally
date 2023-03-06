@@ -32,6 +32,8 @@ export default function Login() {
         }
          SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {
           navigate(res.data[0]['route'])
+          setActiveMenuItem(res.data[0]['_id'])
+          window.location.reload()
          })
       })
       .catch((err) => {

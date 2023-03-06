@@ -14,20 +14,17 @@ export default function Home() {
   const [open, setOpen] = useState(true);
   const value = {open}
 
-
-
-  const getObject = useCallback(() => {
-    let randomQuoteObject;
-    randomQuoteObject = Quotes.randomQuote();
-    setQuote(randomQuoteObject.quote + ' - ' + randomQuoteObject.author);
-  }, []);
-
   useEffect(() => {
+    const getObject = () => {
+      let randomQuoteObject;
+      randomQuoteObject = Quotes.randomQuote();
+      setQuote(randomQuoteObject.quote + ' - ' + randomQuoteObject.author);
+    }
     getObject();
     setInterval(() => {
       getObject();
     }, 86400 * 1000);
-  }, [getObject]);
+  }, []);
 
   useEffect(() => {
     const loggedInUser = window.localStorage.getItem("user");

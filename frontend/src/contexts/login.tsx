@@ -36,9 +36,9 @@ const LoginContext = React.createContext<loginContextType>({
   setUserSpaces: () => {
     throw new Error('Missing LoginContext provider');
   },
-  tallies: [{_id: '', spaceId: '', tallyName: '', tallyNumber: 0}],
+  tallies: [{ _id: '', spaceId: '', tallyName: '', tallyNumber: 0 }],
   setTallies: () => {
-    throw new Error('Missing LoginContext provider')
+    throw new Error('Missing LoginContext provider');
   }
 });
 
@@ -46,34 +46,37 @@ function LoginProvider({ children }: LoginProviderProps) {
   const [user, setUser] = React.useState<User | null>(null);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [userSpaces, setUserSpaces] = React.useState<Space[] | null>(null);
-  const [tallies, setTallies] = React.useState<TallyCard[] | null>(null)
-  const {activeMenuItem} = React.useContext(SpaceContext)
-
+  const [tallies, setTallies] = React.useState<TallyCard[] | null>(null);
+  const { activeMenuItem } = React.useContext(SpaceContext);
 
   React.useEffect(() => {
     const getUserId = () => {
-      const loggedInUser = window.localStorage.getItem("user");
-      if(!loggedInUser){
+      const loggedInUser = window.localStorage.getItem('user');
+      if (!loggedInUser) {
         return;
       }
-      const parsedUser = JSON.parse(loggedInUser)
-      return parsedUser.user._id
-    }
+      const parsedUser = JSON.parse(loggedInUser);
+      return parsedUser.user._id;
+    };
     const getData = async () => {
-      const spaces = window.localStorage.getItem("spaces")
+      const spaces = window.localStorage.getItem('spaces');
 
-    if(!spaces){
-      return;
-    }
-    const parsedSpaces = JSON.parse(spaces).data
-      if(parsedSpaces){
-        setUserSpaces(parsedSpaces)
-      } else {
-        setUserSpaces(await SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {return res.data}))
+      if (!spaces) {
+        return;
       }
-    }
-    getData()
-  },[])
+      const parsedSpaces = JSON.parse(spaces).data;
+      if (parsedSpaces) {
+        setUserSpaces(parsedSpaces);
+      } else {
+        setUserSpaces(
+          await SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {
+            return res.data;
+          })
+        );
+      }
+    };
+    getData();
+  }, []);
 
   React.useEffect(() => {
     const getData = async () => {
@@ -86,7 +89,7 @@ function LoginProvider({ children }: LoginProviderProps) {
       );
     };
     getData();
-  }, [activeMenuItem])
+  }, [activeMenuItem]);
 
   return (
     <LoginContext.Provider

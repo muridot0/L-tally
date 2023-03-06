@@ -15,7 +15,7 @@ interface Props {
 
 function MenuGroup({spaces}: Props) {
   const { activeMenuItem, setActiveMenuItem } = useContext(SpaceContext)
-  const [menuItems, setMenuItems] = useState<Space[] | null>(null);
+  const [menuItems, setMenuItems] = useState<Space[] | null>(spaces);
   const [spaceName, setSpaceName] = useState(String);
   const [activeInput, setActiveInput] = useState(false);
   const navigate = useNavigate();

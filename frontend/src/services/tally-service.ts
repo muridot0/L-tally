@@ -4,7 +4,7 @@ import authHeader from "./auth-header";
 import { BaseService } from "./base-service";
 
 export class TallyService extends BaseService{
-  static getTallyBySpaceId(filter: string): Promise<void | TallyCard[]> {
+  static getTallyBySpaceId(filter: string): Promise<void> {
     return axios.get(`${this.root}/tally?spaceId=${filter}`, {headers: authHeader()}).then((res) => {
       if(res.statusText !== 'OK') {
         throw new Error(`Bad response code ${res.status} returned`)

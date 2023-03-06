@@ -13,7 +13,7 @@ interface Props {
 }
 
 function AddPerson({ openNav, spaceId, tallies }: Props) {
-  const [tallyArr, setTallyArr] = useState<TallyCard[] | null>(null);
+  const [tallyArr, setTallyArr] = useState<TallyCard[] | null>(tallies);
   const [person, setPerson] = useState(String);
   const [showInputTally, setShowInputTally] = useState(false);
   const { activeMenuItem } = useContext(SpaceContext);
@@ -101,9 +101,7 @@ function AddPerson({ openNav, spaceId, tallies }: Props) {
       return tallyArr.filter(tally => {return tally._id !== id})
     });
     // setTallyArr(tallyArr.filter((tally) => {return tally._id !== id}));
-    // TallyService.deleteTally(id).then(() => {
-    //   // window.location.reload()
-    // })
+    TallyService.deleteTally(id)
   };
 
   function dummyTally() {
@@ -141,7 +139,7 @@ function AddPerson({ openNav, spaceId, tallies }: Props) {
       <div className={clsx(styles.tallyContainer)}>
         <div className={clsx(styles.tallyGroup)}>
           {tallyArr?.map((tallyItem, index) => {
-            if (spaceId === tallyItem.spaceId) {
+            if (tallyItem.spaceId === spaceId) {
               return (
                 <Tally
                   tally={tallyItem}
