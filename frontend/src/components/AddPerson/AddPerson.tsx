@@ -138,12 +138,12 @@ function AddPerson({ openNav, spaceId, tallies }: Props) {
     <div className={clsx({ [styles.openDrawer]: openNav })}>
       <div className={clsx(styles.tallyContainer)}>
         <div className={clsx(styles.tallyGroup)}>
-          {tallyArr?.map((tallyItem, index) => {
+          {tallyArr?.map((tallyItem) => {
             if (tallyItem.spaceId === spaceId) {
               return (
                 <Tally
                   tally={tallyItem}
-                  key={index}
+                  key={tallyItem._id}
                   onDelete={() => handleDelete(tallyItem._id)}
                 />
               );

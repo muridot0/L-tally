@@ -139,10 +139,10 @@ function MenuGroup({spaces}: Props) {
             </span>
           </div>
           <div className={styles.menuItemGroup}>
-            {menuItems?.map((menuItem, index) => {
+            {menuItems?.map((menuItem) => {
               return (
                   <Menu
-                    key={index}
+                    key={menuItem._id}
                     item={menuItem}
                     onDelete={() => {
                       handleDeleteItem(menuItem._id);
