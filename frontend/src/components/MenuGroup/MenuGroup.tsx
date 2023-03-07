@@ -8,6 +8,7 @@ import { SpaceService } from '../../services/space-service';
 import { Space } from '../../models/space';
 import { useNavigate } from 'react-router-dom';
 import { SpaceContext } from '../../contexts/space';
+import { LoginContext } from '../../contexts/login';
 
 interface Props {
   spaces: Space[] | null
@@ -15,20 +16,12 @@ interface Props {
 
 function MenuGroup({spaces}: Props) {
   const { activeMenuItem, setActiveMenuItem } = useContext(SpaceContext)
+  const {user} = useContext(LoginContext)
   const [menuItems, setMenuItems] = useState<Space[] | null>(spaces);
   const [spaceName, setSpaceName] = useState(String);
   const [activeInput, setActiveInput] = useState(false);
   const navigate = useNavigate();
 
-
-  const getUserId = () => {
-    const loggedInUser = window.localStorage.getItem("user");
-    if(!loggedInUser){
-      throw new Error(`Cannot parse null of user`);
-    }
-    const parsedUser = JSON.parse(loggedInUser)
-    return parsedUser.user._id
-  }
 
   useEffect(() => {
     setMenuItems(spaces)
@@ -47,7 +40,11 @@ function MenuGroup({spaces}: Props) {
     window.localStorage.setItem('activeMenuItem', activeMenuItem)
   }, [activeMenuItem])
 
+
   async function addMenuItems(name: string) {
+    if(!user){
+      return;
+    }
     if(!menuItems) {
       return ;
     }
@@ -61,7 +58,7 @@ function MenuGroup({spaces}: Props) {
     let newArr = [
       ...menuItems,
       {
-        userId: getUserId(),
+        userId: user._id,
         meta: '',
         spaceName: spaceName,
         _id: id,
@@ -70,7 +67,7 @@ function MenuGroup({spaces}: Props) {
     ];
 
     await SpaceService.createSpace({
-      userId: getUserId(),
+      userId: user._id,
       _id: id,
       meta: '',
       spaceName: spaceName,
@@ -79,6 +76,7 @@ function MenuGroup({spaces}: Props) {
       setMenuItems(newArr.filter((arr) => arr.spaceName.trim() !== ''));
       setActiveMenuItem(id)
       navigate(`/${spaceName}`)
+      SpaceService.getSpacesByUserId(user._id)
     })
   }
 
@@ -113,8 +111,12 @@ function MenuGroup({spaces}: Props) {
     if(!menuItems) {
       return;
     }
+    if(!user){
+      return
+    }
     SpaceService.deleteSpace(id).then(() =>{
       setMenuItems(menuItems.filter((menuItem) => menuItem._id !== id))
+      SpaceService.getSpacesByUserId(user._id)
     })
 
     const spaces = window.localStorage.getItem("spaces")
@@ -126,6 +128,13 @@ function MenuGroup({spaces}: Props) {
     navigate(`${parsedSpaces[0]['route']}`)
     setActiveMenuItem(parsedSpaces[0]['_id'])
   };
+
+  let noMenuItems
+  noMenuItems = (
+    <div>
+      No menu Items available
+    </div>
+  )
 
   return (
         <div>
@@ -139,18 +148,18 @@ function MenuGroup({spaces}: Props) {
             </span>
           </div>
           <div className={styles.menuItemGroup}>
-            {menuItems?.map((menuItem) => {
-              return (
-                  <Menu
-                    key={menuItem._id}
-                    item={menuItem}
-                    onDelete={() => {
-                      handleDeleteItem(menuItem._id);
-                    }}
-                    onClick={() => setActiveMenuItem(menuItem._id)}
-                  />
-              );
-            })}
+            {!menuItems?.length ? noMenuItems: menuItems.map((menuItem) => {
+                return (
+                    <Menu
+                      key={menuItem._id}
+                      item={menuItem}
+                      onDelete={() => {
+                        handleDeleteItem(menuItem._id);
+                      }}
+                      onClick={() => setActiveMenuItem(menuItem._id)}
+                    />
+                );
+              }) }
           </div>
           {activeInput ? (
             <div className={clsx(styles.input)}>

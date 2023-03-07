@@ -1,6 +1,7 @@
 import React from 'react';
 import { Space } from '../models/space';
 import { TallyCard } from '../models/tallyCard';
+import { AuthService } from '../services/auth-service';
 import { SpaceService } from '../services/space-service';
 import { TallyService } from '../services/tally-service';
 import { SpaceContext } from './space';
@@ -8,6 +9,7 @@ import { SpaceContext } from './space';
 type User = {
   username: string;
   avatar: string;
+  _id: string;
 };
 
 interface loginContextType {
@@ -24,7 +26,7 @@ interface loginContextType {
 interface LoginProviderProps extends React.PropsWithChildren {}
 
 const LoginContext = React.createContext<loginContextType>({
-  user: { username: '', avatar: '' },
+  user: { username: '', avatar: '', _id: '' },
   setUser: () => {
     throw new Error('Missing LoginContext provider');
   },
@@ -50,17 +52,12 @@ function LoginProvider({ children }: LoginProviderProps) {
   const { activeMenuItem } = React.useContext(SpaceContext);
 
   React.useEffect(() => {
-    const getUserId = () => {
-      const loggedInUser = window.localStorage.getItem('user');
-      if (!loggedInUser) {
+    const getData = async () => {
+      if(!user){
         return;
       }
-      const parsedUser = JSON.parse(loggedInUser);
-      return parsedUser.user._id;
-    };
-    const getData = async () => {
-      const spaces = window.localStorage.getItem('spaces');
 
+      const spaces = window.localStorage.getItem('spaces');
       if (!spaces) {
         return;
       }
@@ -69,14 +66,14 @@ function LoginProvider({ children }: LoginProviderProps) {
         setUserSpaces(parsedSpaces);
       } else {
         setUserSpaces(
-          await SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {
+          await SpaceService.getSpacesByUserId(user._id).then((res: any) => {
             return res.data;
           })
         );
       }
     };
     getData();
-  }, []);
+  }, [user]);
 
   React.useEffect(() => {
     const getData = async () => {
@@ -90,6 +87,14 @@ function LoginProvider({ children }: LoginProviderProps) {
     };
     getData();
   }, [activeMenuItem]);
+
+  React.useEffect(() => {
+    const loggedInUser = window.localStorage.getItem('user');
+      if (!loggedInUser) {
+        return;
+      }
+      setUser(AuthService.getCurrentUser().user)
+  }, [setUser])
 
   return (
     <LoginContext.Provider

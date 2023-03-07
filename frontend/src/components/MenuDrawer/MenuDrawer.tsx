@@ -1,10 +1,9 @@
 import clsx from 'clsx';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import MenuGroup from '../MenuGroup/MenuGroup';
 import QuoteOfTheDay from '../QuoteOfTheDay/QuoteOfTheDay';
 import TallyFooter from '../TallyFooter/TallyFooter';
 import styles from './MenuDrawer.module.css';
-import { AuthService } from '../../services/auth-service';
 import { LoginContext } from '../../contexts/login';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,12 +14,8 @@ interface Props {
 
 
 function MenuDrawer({ openDrawer, quoteSupplier, }: Props) {
-  const { userSpaces, user, setUser } = useContext(LoginContext)
+  const { userSpaces, user } = useContext(LoginContext)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    setUser(AuthService.getCurrentUser().user)
-  }, [setUser])
 
   const handleLogout = () => {
     window.localStorage.clear()
