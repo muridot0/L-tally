@@ -31,7 +31,7 @@ function AddPerson({ openNav, spaceId, tallies }: Props) {
   //   getData();
   // }, [activeMenuItem]);
   useEffect(() => {
-    setTallyArr(tallies)
+    setTallyArr(tallies);
   }, [tallies]);
 
   const handleAddPerson = async (name: string) => {
@@ -97,11 +97,9 @@ function AddPerson({ openNav, spaceId, tallies }: Props) {
     if (!tallyArr) {
       return;
     }
-    setTallyArr(() => {
-      return tallyArr.filter(tally => {return tally._id !== id})
+    TallyService.deleteTally(id).then(() => {
+      setTallyArr(tallyArr.filter((tally) => tally._id !== id));
     });
-    // setTallyArr(tallyArr.filter((tally) => {return tally._id !== id}));
-    TallyService.deleteTally(id)
   };
 
   function dummyTally() {

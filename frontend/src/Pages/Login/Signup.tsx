@@ -1,8 +1,10 @@
 import styles from './Login.module.css';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/auth-service';
+import { SpaceService } from '../../services/space-service';
+import { SpaceContext } from '../../contexts/space';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -19,6 +21,7 @@ export default function SignUp() {
   const [usernameFocus, setUserNameFocus] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
+  const { setActiveMenuItem } = useContext(SpaceContext);
 
   useEffect(() => {
     setValidPwd(PWD_REGEX.test(password));
@@ -67,13 +70,36 @@ export default function SignUp() {
       setMessage('Invalid entry');
     }
 
-    await AuthService.register(username, email, password).then(
-      () => {
-        const strategy = 'login';
-        AuthService.login(username, password, strategy).then(() => {
-          navigate('/');
-          window.location.reload();
-        });
+    await AuthService.register(username, email, password).then(() => {
+        AuthService.login(username, password, 'login')
+          .then(() => {
+            const getUserId = () => {
+              const loggedInUser = window.localStorage.getItem("user");
+              if(!loggedInUser){
+                return;
+              }
+              const parsedUser = JSON.parse(loggedInUser)
+              return parsedUser.user._id
+            }
+            SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {
+              if(res.data.length === 0){
+                navigate('/')
+                window.location.reload()
+              }
+              else {
+                navigate(res.data[0]['route'])
+                setActiveMenuItem(res.data[0]['_id'])
+                window.location.reload()
+              }
+            })
+          })
+          .catch((err) => {
+            if (err.response.status === 401) {
+              setMessage('Invalid username or password');
+            } else {
+              setMessage('No server response');
+            }
+          })
       },
       (error) => {
         const resMessage =
@@ -189,7 +215,7 @@ export default function SignUp() {
               )}
             </label>
             <input
-              type='text'
+              type='password'
               id='password'
               value={password}
               onFocus={() => setPwdFocus(true)}

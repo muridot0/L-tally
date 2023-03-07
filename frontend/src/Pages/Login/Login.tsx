@@ -19,8 +19,7 @@ export default function Login() {
 
   async function handleLogin(e: any) {
     e.preventDefault();
-    const strategy = 'login';
-    await AuthService.login(username, password, strategy)
+    await AuthService.login(username, password, 'login')
       .then(() => {
         const getUserId = () => {
           const loggedInUser = window.localStorage.getItem("user");
@@ -31,9 +30,15 @@ export default function Login() {
           return parsedUser.user._id
         }
          SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {
-          navigate(res.data[0]['route'])
-          setActiveMenuItem(res.data[0]['_id'])
-          window.location.reload()
+          if(res.data.length === 0){
+            navigate('/')
+            window.location.reload()
+          }
+          else {
+            navigate(res.data[0]['route'])
+            setActiveMenuItem(res.data[0]['_id'])
+            window.location.reload()
+          }
          })
       })
       .catch((err) => {
