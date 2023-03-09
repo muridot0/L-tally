@@ -8,9 +8,21 @@
   text-decoration: none;
 }
 
-.divider{
+.divider {
   margin-top: 1rem;
-  border-top: 1px solid var(--main-bg-color)
+  border-top: 1px solid var(--main-bg-color);
+}
+
+.card {
+  border-radius: 0.5rem;
+  align-items: center;
+  background-color: var(--main-bg-color);
+  padding: 0.25rem 1rem;
+  margin: 1rem;
+}
+
+.tip {
+  color: var(--main-item-color);
 }
 
 .addButton {
@@ -36,8 +48,8 @@
   border: none;
 }
 
-.inputField:focus{
-    outline-color: var(--main-item-color)
+.inputField:focus {
+  outline-color: var(--main-item-color);
 }
 
 .activeItem {
@@ -72,7 +84,7 @@
   color: var(--passive-color);
 }
 
-.menuItemGroup{
+.menuItemGroup {
   max-height: 10rem;
   overflow: auto;
 }

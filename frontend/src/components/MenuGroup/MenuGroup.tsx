@@ -131,8 +131,8 @@ function MenuGroup({spaces}: Props) {
 
   let noMenuItems
   noMenuItems = (
-    <div>
-      No menu Items available
+    <div className={clsx(styles.card)}>
+      <p className={styles.tip}>Click on the "➕" button above to create a space</p>
     </div>
   )
 
