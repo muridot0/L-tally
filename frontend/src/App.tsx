@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { SpaceProvider } from './contexts/space';
 import DefaultPage from './Pages/DefaultPage/DefaultPage';
 import Home from './Pages/Home/Home';
@@ -7,11 +7,34 @@ import { LoginProvider, User } from './contexts/login';
 import SignUp from './Pages/Login/Signup';
 import { AuthService } from './services/auth-service';
 import AuthVerify from './common/AuthVerify';
+import { useCallback, useEffect } from 'react';
+import { useIdleTimer } from 'react-idle-timer';
 
 function App() {
-  const logOut = () => {
+  const navigate = useNavigate()
+
+  const logOut = useCallback(() => {
     AuthService.logout();
-  };
+    navigate('/login')
+  }, [navigate]);
+
+  const onIdle = useCallback(() => {
+    logOut()
+  }, [logOut])
+
+  const isIdle  = useIdleTimer({timeout: 1000 * 60 * 1, onIdle})
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if(isIdle.isIdle()){
+        onIdle()
+      }
+      console.log(isIdle.getLastActiveTime())
+    }, 1000 * 60 * 1)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [isIdle, onIdle])
 
   return (
     <SpaceProvider>

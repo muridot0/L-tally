@@ -21,9 +21,10 @@ export default function Home() {
       setQuote(randomQuoteObject.quote + ' - ' + randomQuoteObject.author);
     }
     getObject();
-    setInterval(() => {
+    const interval = setInterval(() => {
       getObject();
     }, 86400 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
