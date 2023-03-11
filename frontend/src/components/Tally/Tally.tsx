@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import styles from './Tally.module.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { TallyCard } from '../../models/tallyCard';
 import { TallyService } from '../../services/tally-service';
 
@@ -12,30 +12,28 @@ interface Props {
 function Tally({ tally, onDelete }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [tallyCard, setTallyCard] = useState(tally);
-  const [addOrSubtractId, setAddOrSubtractId] = useState('');
-
-  useEffect(() => {
-    TallyService.patchTallyNumber(addOrSubtractId, tallyCard.tallyNumber)
-  },[addOrSubtractId, tallyCard.tallyNumber])
 
   const increaseTally = () => {
     setTallyCard((tallyCard) => {
       return {
         ...tallyCard,
-        tallyNumber: tallyCard.tallyNumber++
+        tallyNumber: tallyCard.tallyNumber + 1
       };
     });
+    TallyService.patchTallyNumber(tallyCard._id, tallyCard.tallyNumber + 1)
   };
 
   const decreaseTally = () => {
     if (tallyCard.tallyNumber > 0) {
-      setAddOrSubtractId(tallyCard._id)
       setTallyCard((tallyCard) => {
         return {
           ...tallyCard,
-          tallyNumber: tallyCard.tallyNumber--
+          tallyNumber: tallyCard.tallyNumber - 1
         };
       });
+      TallyService.patchTallyNumber(tallyCard._id, tallyCard.tallyNumber - 1).then(() => {
+
+      })
     }
   };
 
@@ -127,7 +125,6 @@ function Tally({ tally, onDelete }: Props) {
           <span
             className={clsx('material-symbols-rounded', styles.addButton)}
             onClick={() => {
-              setAddOrSubtractId(tallyCard._id)
               increaseTally()
             }}
           >

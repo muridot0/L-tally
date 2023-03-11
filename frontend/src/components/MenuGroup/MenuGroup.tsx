@@ -116,17 +116,23 @@ function MenuGroup({spaces}: Props) {
     }
     SpaceService.deleteSpace(id).then(() =>{
       setMenuItems(menuItems.filter((menuItem) => menuItem._id !== id))
-      SpaceService.getSpacesByUserId(user._id)
+      SpaceService.getSpacesByUserId(user._id).then(() => {
+        const spaces = window.localStorage.getItem("spaces")
+
+        if(!spaces){
+          return;
+        }
+        const parsedSpaces = JSON.parse(spaces).data
+        if(!parsedSpaces.length){
+          navigate('/')
+          setActiveMenuItem('')
+          return;
+        }
+        navigate(`${parsedSpaces[0]['route']}`)
+        setActiveMenuItem(parsedSpaces[0]['_id'])
+      })
     })
 
-    const spaces = window.localStorage.getItem("spaces")
-
-    if(!spaces){
-      return;
-    }
-    const parsedSpaces = JSON.parse(spaces).data
-    navigate(`${parsedSpaces[0]['route']}`)
-    setActiveMenuItem(parsedSpaces[0]['_id'])
   };
 
   let noMenuItems

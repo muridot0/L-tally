@@ -20,12 +20,12 @@ export class TallyService extends BaseService{
     return axios.post(`${this.root}/tally`, tally, {headers: authHeader()})
   }
 
-  static patchTally(tally: TallyCard) {
-    return void axios.patch(`${this.root}/tally/${tally._id}`, tally, {headers: authHeader()})
+  static patchTally(tally: TallyCard): Promise<void> {
+    return axios.patch(`${this.root}/tally/${tally._id}`, tally, {headers: authHeader()})
   }
 
-  static patchTallyNumber(id: string, count: number) {
-    return void axios.patch(`${this.root}/tally/${id}`, {tallyNumber: count}, {headers: authHeader()})
+  static patchTallyNumber(id: string, count: number): Promise<void> {
+    return axios.patch(`${this.root}/tally/${id}`, {tallyNumber: count}, {headers: authHeader()})
   }
 
   static deleteTally(id: string): Promise<void> {

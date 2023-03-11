@@ -22,7 +22,7 @@ function App() {
     logOut()
   }, [logOut])
 
-  const isIdle  = useIdleTimer({timeout: 1000 * 60 * 1, onIdle})
+  const isIdle  = useIdleTimer({timeout: 1000 * 60 * 20, onIdle})
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,7 +30,7 @@ function App() {
         onIdle()
       }
       console.log(isIdle.getLastActiveTime())
-    }, 1000 * 60 * 1)
+    }, 1000 * 60 * 20)
     return () => {
       clearInterval(interval)
     }

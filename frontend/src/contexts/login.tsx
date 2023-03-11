@@ -86,7 +86,7 @@ function LoginProvider({ children }: LoginProviderProps) {
       );
     };
     getData();
-  }, [activeMenuItem]);
+  }, [activeMenuItem, tallies]);
 
   React.useEffect(() => {
     const loggedInUser = window.localStorage.getItem('user');

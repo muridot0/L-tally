@@ -18,18 +18,6 @@ function AddPerson({ openNav, spaceId, tallies }: Props) {
   const [showInputTally, setShowInputTally] = useState(false);
   const { activeMenuItem } = useContext(SpaceContext);
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     setTallyArr(
-  //       await TallyService.getTallyBySpaceId(activeMenuItem).then(
-  //         (res: any) => {
-  //           return res.data;
-  //         }
-  //       )
-  //     );
-  //   };
-  //   getData();
-  // }, [activeMenuItem]);
   useEffect(() => {
     setTallyArr(tallies);
   }, [tallies]);

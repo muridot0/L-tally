@@ -1,6 +1,7 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { LoginContext } from '../../contexts/login';
 import { Space } from '../../models/space';
 import { SpaceService } from '../../services/space-service';
 import styles from './Menu.module.css';
@@ -19,9 +20,22 @@ function Menu({ item, onClick, onDelete }: Props) {
   const [editedSpaceName, setEditedSpaceName] = useState('')
   const [menuItem, setMenuItem] = useState(item)
   const navigate = useNavigate();
+  const {user} = useContext(LoginContext)
+
 
   const confirmEdit = () => {
-    SpaceService.patchSpace({...item, spaceName: editedSpaceName, route: `/${editedSpaceName}`})
+    if(editedSpaceName === ""){
+      console.log('bruh')
+      setIsEditing(false)
+      setShowIcons(false)
+      return;
+    }
+    if(!user){
+      return;
+    }
+    SpaceService.patchSpace({...item, spaceName: editedSpaceName, route: `/${editedSpaceName}`}).then(() => {
+      SpaceService.getSpacesByUserId(user._id)
+    })
     navigate(`/${editedSpaceName}`)
     setIsEditing(false);
     setShowIcons(false);
