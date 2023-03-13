@@ -3,15 +3,16 @@ import { SpaceProvider } from './contexts/space';
 import DefaultPage from './Pages/DefaultPage/DefaultPage';
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
-import { LoginProvider, User } from './contexts/login';
+import { LoginContext, LoginProvider, User } from './contexts/login';
 import SignUp from './Pages/Login/Signup';
 import { AuthService } from './services/auth-service';
-import AuthVerify from './common/AuthVerify';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 
 function App() {
   const navigate = useNavigate()
+  const {user} = useContext(LoginContext)
+
 
   const logOut = useCallback(() => {
     AuthService.logout();
@@ -36,17 +37,20 @@ function App() {
     }
   }, [isIdle, onIdle])
 
+  if(!user){
+    return null;
+  }
+
   return (
     <SpaceProvider>
       <LoginProvider>
         <Routes>
           <Route path='/' element={<Home />}>
-            <Route path='/:space' element={<DefaultPage />} />
+            <Route path='/:space/:id' element={<DefaultPage />} />
           </Route>
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
         </Routes>
-        <AuthVerify logOut={logOut} />
       </LoginProvider>
     </SpaceProvider>
   );

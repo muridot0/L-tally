@@ -1,7 +1,8 @@
-import { useState, useEffect, createContext } from 'react';
-import { Outlet, useNavigate  } from 'react-router-dom';
+import { useState, useEffect, createContext, useContext } from 'react';
+import { Outlet, useNavigate, useParams  } from 'react-router-dom';
 import MenuDrawer from '../../components/MenuDrawer/MenuDrawer';
 import TallyHeader from '../../components/TallyHeader/TallyHeader';
+import { SpaceContext } from '../../contexts/space';
 const Quotes = require('randomquote-api');
 
 export const OpenContext = createContext({
@@ -13,6 +14,17 @@ export default function Home() {
   const [quote, setQuote] = useState(String);
   const [open, setOpen] = useState(true);
   const value = {open}
+
+  const { setActiveMenuItem } = useContext(SpaceContext)
+
+  const {id} = useParams()
+
+  useEffect(() => {
+    if(!id){
+      return;
+    }
+    setActiveMenuItem(id)
+  })
 
   useEffect(() => {
     const getObject = () => {

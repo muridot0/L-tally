@@ -62,7 +62,7 @@ function MenuGroup({spaces}: Props) {
         meta: '',
         spaceName: spaceName,
         _id: id,
-        route: `/${spaceName}`,
+        route: `/${spaceName}/${id}`,
       },
     ];
 
@@ -71,11 +71,11 @@ function MenuGroup({spaces}: Props) {
       _id: id,
       meta: '',
       spaceName: spaceName,
-      route: `/${spaceName}`,
+      route: `/${spaceName}/${id}`,
     }).then(() => {
       setMenuItems(newArr.filter((arr) => arr.spaceName.trim() !== ''));
       setActiveMenuItem(id)
-      navigate(`/${spaceName}`)
+      navigate(`/${spaceName}/${id}`)
       SpaceService.getSpacesByUserId(user._id)
     })
   }
@@ -154,7 +154,7 @@ function MenuGroup({spaces}: Props) {
             </span>
           </div>
           <div className={styles.menuItemGroup}>
-            {!menuItems?.length ? noMenuItems: menuItems.map((menuItem) => {
+            {!menuItems?.length ? noMenuItems : menuItems.map((menuItem) => {
                 return (
                     <Menu
                       key={menuItem._id}

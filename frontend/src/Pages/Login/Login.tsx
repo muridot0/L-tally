@@ -1,7 +1,7 @@
 import styles from './Login.module.css';
 import clsx from 'clsx';
 import { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { redirect, Link, useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/auth-service';
 import { SpaceContext } from '../../contexts/space';
 import { SpaceService } from '../../services/space-service';
@@ -20,24 +20,24 @@ export default function Login() {
   async function handleLogin(e: any) {
     e.preventDefault();
     await AuthService.login(username, password, 'login')
-      .then(() => {
-        const getUserId = () => {
-          const loggedInUser = window.localStorage.getItem("user");
-          if(!loggedInUser){
-            return;
-          }
-          const parsedUser = JSON.parse(loggedInUser)
-          return parsedUser.user._id
+    .then(() => {
+      const getUserId = () => {
+        const loggedInUser = window.localStorage.getItem("user");
+        if(!loggedInUser){
+          return redirect('/login');
         }
-         SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {
-          if(res.data.length === 0){
-            navigate('/')
-            window.location.reload()
-          }
-          else {
-            navigate(res.data[0]['route'])
-            setActiveMenuItem(res.data[0]['_id'])
-            window.location.reload()
+        const parsedUser = JSON.parse(loggedInUser)
+        return parsedUser.user._id
+      }
+      SpaceService.getSpacesByUserId(getUserId()).then((res: any) => {
+        if(res.data.length === 0){
+          navigate('/')
+          window.location.reload()
+        }
+        else {
+          navigate(res.data[0]['route'])
+          setActiveMenuItem(res.data[0]['route'])
+          window.location.reload()
           }
          })
       })
