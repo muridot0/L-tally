@@ -12,10 +12,9 @@ export const OpenContext = createContext({
 export default function Home() {
   const navigate = useNavigate()
   const [quote, setQuote] = useState(String);
-  const [open, setOpen] = useState(true);
-  const value = {open}
+  // const [open, setOpen] = useState(true);
 
-  const { setActiveMenuItem } = useContext(SpaceContext)
+  const { setActiveMenuItem, openDrawer, setOpenDrawer } = useContext(SpaceContext)
 
   const {id} = useParams()
 
@@ -49,16 +48,14 @@ export default function Home() {
 
   return (
     <>
-      <OpenContext.Provider value={value}>
         <TallyHeader
-          menuDrawerOpened={open}
-          onNavOpen={() => setOpen(true)}
-          onNavClose={() => setOpen(false)}
+          menuDrawerOpened={openDrawer}
+          onNavOpen={() => setOpenDrawer(true)}
+          onNavClose={() => setOpenDrawer(false)}
         >
-          <MenuDrawer openDrawer={open} quoteSupplier={quote} />
+          <MenuDrawer openDrawer={openDrawer} quoteSupplier={quote} />
           <Outlet />
         </TallyHeader>
-      </OpenContext.Provider>
     </>
   );
 }

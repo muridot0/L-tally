@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import AddPerson from '../../components/AddPerson/AddPerson';
 import { LoginContext } from '../../contexts/login';
 import { SpaceContext } from '../../contexts/space';
-import { OpenContext } from '../Home/Home';
 
 function DefaultPage() {
   const navigate = useNavigate();
-  const { open } = useContext(OpenContext);
+  const { openDrawer } = useContext(SpaceContext);
   const { activeMenuItem } = useContext(SpaceContext);
   const {tallies} = useContext(LoginContext)
 
@@ -19,7 +18,7 @@ function DefaultPage() {
     }
   });
 
-  return <AddPerson openNav={open} spaceId={activeMenuItem} tallies={tallies}/>;
+  return <AddPerson openNav={openDrawer} spaceId={activeMenuItem} tallies={tallies}/>;
 }
 
 export default DefaultPage;
