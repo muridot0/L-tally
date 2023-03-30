@@ -33,10 +33,14 @@ function MenuDrawer({ openDrawer, quoteSupplier, }: Props) {
           { [styles.closedDrawer]: !openDrawer }
         )}
       >
-        <MenuGroup spaces={userSpaces}
-        />
-        <QuoteOfTheDay className={styles.quote} quote={quoteSupplier} />
-        <TallyFooter userName={user.username} userIcon={user.avatar} onClick={handleLogout} />
+        <div className={clsx(styles.spaceQuoteGroup)}>
+          <MenuGroup spaces={userSpaces}
+          />
+          <QuoteOfTheDay className={styles.quote} quote={quoteSupplier} />
+        </div>
+        <div>
+          <TallyFooter userName={user.username} userIcon={user.avatar} onClick={handleLogout} />
+        </div>
       </div>
   );
 }

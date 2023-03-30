@@ -53,7 +53,7 @@ export default function Login() {
 
 
   return (
-    <>
+    <div className={styles.loginPage}>
       <div className={styles.logo}>
         <span className={clsx('material-symbols-rounded', styles.icon)}>
           scoreboard
@@ -116,6 +116,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

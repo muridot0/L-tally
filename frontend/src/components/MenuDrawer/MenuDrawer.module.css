@@ -25,3 +25,8 @@
   visibility: hidden;
   opacity: 0;
 }
+
+.spaceQuoteGroup {
+  height: 40rem;
+  overflow: auto;
+}
