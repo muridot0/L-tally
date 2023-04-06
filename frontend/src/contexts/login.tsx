@@ -72,8 +72,11 @@ function LoginProvider({ children }: LoginProviderProps) {
         );
       }
     };
+    if(!loggedIn){
+      return;
+    }
     getData();
-  }, [user]);
+  }, [user, loggedIn]);
 
   React.useEffect(() => {
     const getData = async () => {
@@ -85,8 +88,11 @@ function LoginProvider({ children }: LoginProviderProps) {
         )
       );
     };
+    if(!loggedIn){
+      return;
+    }
     getData();
-  }, [activeMenuItem, tallies]);
+  }, [activeMenuItem, tallies, loggedIn]);
 
   React.useEffect(() => {
     const loggedInUser = window.localStorage.getItem('user');
@@ -95,6 +101,14 @@ function LoginProvider({ children }: LoginProviderProps) {
       }
       setUser(AuthService.getCurrentUser().user)
   }, [setUser])
+
+  React.useEffect(() => {
+    if(!user){
+      setLoggedIn(false)
+    }else{
+      setLoggedIn(true);
+    }
+  }, [user, setLoggedIn])
 
   return (
     <LoginContext.Provider
